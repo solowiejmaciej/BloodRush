@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodRush.API", "src\BloodRush.API\BloodRush.API.csproj", "{07316F78-3D52-49D0-8800-57FCA454D0CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodRush.Notifier", "src\BloodRush.Notifier\BloodRush.Notifier\BloodRush.Notifier.csproj", "{551DF189-7882-4DFF-B1B9-A991E72AA1D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodRush.Contracts", "BloodRush.Contracts\BloodRush.Contracts.csproj", "{05B63D8D-8B84-4EE1-B0D2-58302EB58535}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{07316F78-3D52-49D0-8800-57FCA454D0CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07316F78-3D52-49D0-8800-57FCA454D0CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07316F78-3D52-49D0-8800-57FCA454D0CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07316F78-3D52-49D0-8800-57FCA454D0CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{551DF189-7882-4DFF-B1B9-A991E72AA1D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{551DF189-7882-4DFF-B1B9-A991E72AA1D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{551DF189-7882-4DFF-B1B9-A991E72AA1D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{551DF189-7882-4DFF-B1B9-A991E72AA1D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05B63D8D-8B84-4EE1-B0D2-58302EB58535}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05B63D8D-8B84-4EE1-B0D2-58302EB58535}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05B63D8D-8B84-4EE1-B0D2-58302EB58535}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05B63D8D-8B84-4EE1-B0D2-58302EB58535}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
