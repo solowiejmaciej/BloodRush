@@ -4,6 +4,7 @@ using BloodRush.API.Entities.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BloodRush.API.Migrations
 {
     [DbContext(typeof(BloodRushDbContext))]
-    partial class BloodRushDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231121210156_RefreshTokensAdded")]
+    partial class RefreshTokensAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

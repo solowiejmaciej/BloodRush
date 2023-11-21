@@ -4,6 +4,7 @@ using BloodRush.API.Entities.DbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BloodRush.API.Migrations
 {
     [DbContext(typeof(BloodRushDbContext))]
-    partial class BloodRushDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231120225400_IsPhoneNumberConfirmedAdded")]
+    partial class IsPhoneNumberConfirmedAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,48 +91,6 @@ namespace BloodRush.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("DonorsRestingPeriodInfo");
-                });
-
-            modelBuilder.Entity("BloodRush.API.Entities.RefreshToken", b =>
-                {
-                    b.Property<string>("Token")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("DonorId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("ExpiryDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Invalidated")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("JwtId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("isUsed")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Token");
-
-                    b.HasIndex("DonorId");
-
-                    b.ToTable("RefreshTokens");
-                });
-
-            modelBuilder.Entity("BloodRush.API.Entities.RefreshToken", b =>
-                {
-                    b.HasOne("BloodRush.API.Entities.Donor", "User")
-                        .WithMany()
-                        .HasForeignKey("DonorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

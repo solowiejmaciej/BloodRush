@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BloodRush.API.Migrations
 {
     [DbContext(typeof(BloodRushDbContext))]
-    [Migration("20231116183454_DonorRestingPeriod")]
-    partial class DonorRestingPeriod
+    [Migration("20231119161944_Update")]
+    partial class Update
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,8 +57,9 @@ namespace BloodRush.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PhoneNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Sex")
                         .HasColumnType("int");
@@ -70,26 +71,6 @@ namespace BloodRush.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Donors");
-                });
-
-            modelBuilder.Entity("BloodRush.API.Entities.DonorNotificationInfo", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("DonorId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("NotificationChannel")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PushNotificationToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DonorsNotificationInfo");
                 });
 
             modelBuilder.Entity("BloodRush.API.Entities.DonorRestingPeriodInfo", b =>

@@ -3,32 +3,27 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace BloodRush.API.Migrations
+namespace BloodRush.Notifier.Migrations
 {
     /// <inheritdoc />
-    public partial class DonorRestingPeriod : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "Password",
-                table: "Donors",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
-
             migrationBuilder.CreateTable(
-                name: "DonorsRestingPeriodInfo",
+                name: "DonorsNotificationInfo",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DonorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RestingPeriodInMonths = table.Column<int>(type: "int", nullable: false)
+                    NotificationChannel = table.Column<int>(type: "int", nullable: false),
+                    PushNotificationToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DonorsRestingPeriodInfo", x => x.Id);
+                    table.PrimaryKey("PK_DonorsNotificationInfo", x => x.Id);
                 });
         }
 
@@ -36,11 +31,7 @@ namespace BloodRush.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "DonorsRestingPeriodInfo");
-
-            migrationBuilder.DropColumn(
-                name: "Password",
-                table: "Donors");
+                name: "DonorsNotificationInfo");
         }
     }
 }

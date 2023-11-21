@@ -18,10 +18,11 @@ namespace BloodRush.API.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Sex = table.Column<int>(type: "int", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     BloodType = table.Column<int>(type: "int", nullable: false),
-                    PhoneNumber = table.Column<int>(type: "int", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     HomeAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Pesel = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -32,17 +33,16 @@ namespace BloodRush.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "DonorsNotificationInfo",
+                name: "DonorsRestingPeriodInfo",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DonorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    NotificationChannel = table.Column<int>(type: "int", nullable: false),
-                    PushNotificationToken = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    RestingPeriodInMonths = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DonorsNotificationInfo", x => x.Id);
+                    table.PrimaryKey("PK_DonorsRestingPeriodInfo", x => x.Id);
                 });
         }
 
@@ -53,7 +53,7 @@ namespace BloodRush.API.Migrations
                 name: "Donors");
 
             migrationBuilder.DropTable(
-                name: "DonorsNotificationInfo");
+                name: "DonorsRestingPeriodInfo");
         }
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BloodRush.API.Migrations
 {
     [DbContext(typeof(BloodRushDbContext))]
-    [Migration("20231115195413_Initial")]
+    [Migration("20231119154640_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -49,12 +49,17 @@ namespace BloodRush.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Pesel")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PhoneNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Sex")
                         .HasColumnType("int");
@@ -68,7 +73,7 @@ namespace BloodRush.API.Migrations
                     b.ToTable("Donors");
                 });
 
-            modelBuilder.Entity("BloodRush.API.Entities.DonorNotificationInfo", b =>
+            modelBuilder.Entity("BloodRush.API.Entities.DonorRestingPeriodInfo", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -77,15 +82,12 @@ namespace BloodRush.API.Migrations
                     b.Property<Guid>("DonorId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("NotificationChannel")
+                    b.Property<int>("RestingPeriodInMonths")
                         .HasColumnType("int");
-
-                    b.Property<string>("PushNotificationToken")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("DonorsNotificationInfo");
+                    b.ToTable("DonorsRestingPeriodInfo");
                 });
 #pragma warning restore 612, 618
         }
