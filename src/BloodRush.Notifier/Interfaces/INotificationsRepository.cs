@@ -13,4 +13,5 @@ public interface INotificationsRepository
     Task<DonorNotificationInfo> GetNotificationInfoByDonorIdAsync(Guid id);
     Task UpdatePushNotificationTokenAsync(Guid id, string token);
     Task ChangeDonorNotificationChanel(Guid id, ENotificationChannel channel);
+    Task DeleteNotificationInfoAsync(Guid donorId);
 }

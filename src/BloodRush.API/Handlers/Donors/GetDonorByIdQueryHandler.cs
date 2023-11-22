@@ -3,6 +3,7 @@
 using AutoMapper;
 using BloodRush.API.Dtos;
 using BloodRush.API.Interfaces;
+using FluentValidation;
 using MediatR;
 
 #endregion
@@ -34,4 +35,13 @@ public class GetDonorByIdQueryHandler : IRequestHandler<GetDonorByIdQuery, Donor
 public record GetDonorByIdQuery : IRequest<DonorDto>
 {
     public Guid Id { get; set; }
+}
+
+public class GetDonorByIdQueryValidator : AbstractValidator<GetDonorByIdQuery>
+{
+    public GetDonorByIdQueryValidator()
+    {
+        RuleFor(x => x.Id)
+            .NotEmpty();
+    }
 }

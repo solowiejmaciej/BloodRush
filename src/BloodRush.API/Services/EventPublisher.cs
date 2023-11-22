@@ -1,6 +1,7 @@
 ﻿#region
 
 using BloodRush.API.Interfaces;
+using BloodRush.Contracts.Enums;
 using BloodRush.Contracts.Events;
 using MassTransit;
 
@@ -22,9 +23,25 @@ public class EventPublisher : IEventPublisher
         _logger = logger;
     }
 
-    public async Task PublishDonorCreatedEventAsync(Guid userId, CancellationToken cancellationToken = default)
+    public async Task PublishDonorCreatedEventAsync(Guid donorId, CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("Publishing DonorCreatedEvent");
-        await _publishEndpoint.Publish(new DonorCreatedEvent(userId), cancellationToken);
+        await _publishEndpoint.Publish(new DonorCreatedEvent(donorId), cancellationToken);
+    }
+
+    public Task PublishSendNotificationEventAsync(Guid donorId, ENotificationType notificationType,
+        int collectionFacilityId,
+        CancellationToken cancellationToken = default)
+    {
+        return _publishEndpoint.Publish(new SendNotificationEvent
+        {
+            DonorId = donorId,
+            CollectionFacilityId = collectionFacilityId,
+            NotificationType = notificationType
+        }, cancellationToken);
+    }
+
+    public async Task PublishDonorDeletedEventAsync(Guid requestDonorId, CancellationToken cancellationToken = default)
+    {
+        await _publishEndpoint.Publish(new DonorDeletedEvent(requestDonorId), cancellationToken);
     }
 }

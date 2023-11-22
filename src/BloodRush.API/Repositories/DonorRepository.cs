@@ -27,8 +27,8 @@ public class DonorRepository : IDonorRepository
     public async Task<Guid> AddDonorAsync(Donor donor)
     {
         var addedDonor = await _context.AddAsync(donor);
-        await AddDefaultRestingPeriodInfoAsync(addedDonor.Entity.Id);
         await _context.SaveChangesAsync();
+        await AddDefaultRestingPeriodInfoAsync(addedDonor.Entity.Id);
         return addedDonor.Entity.Id;
     }
 
@@ -42,6 +42,20 @@ public class DonorRepository : IDonorRepository
     public async Task<List<Donor>> GetAllDonorsAsync()
     {
         return await _context.Donors.ToListAsync();
+    }
+
+    public async Task<Donor?> GetDonorByPhoneNumberAsync(string username)
+    {
+        var donor = await _context.Donors.SingleOrDefaultAsync(d => d.PhoneNumber == username);
+        return donor;
+    }
+
+    public async Task<bool> DeleteDonorAsync(Guid donorId)
+    {
+        var donor = await GetDonorByIdAsync(donorId);
+        _context.Donors.Remove(donor);
+        await _context.SaveChangesAsync();
+        return true;
     }
 
     public async Task<List<Donor?>?> GetDonorsByConditionAsync(Expression<Func<Donor?, bool>> expression)

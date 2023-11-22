@@ -13,6 +13,6 @@ public class BloodRushDbContext : Microsoft.EntityFrameworkCore.DbContext
     }
 
     public DbSet<Donor> Donors { get; set; }
-    public DbSet<DonorNotificationInfo> DonorsNotificationInfo { get; set; }
     public DbSet<DonorRestingPeriodInfo> DonorsRestingPeriodInfo { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
 }

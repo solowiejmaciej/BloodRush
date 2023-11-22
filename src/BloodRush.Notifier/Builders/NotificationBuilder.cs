@@ -32,13 +32,12 @@ public class NotificationBuilder : INotificationBuilder
             Message = notificationContent.Message,
             Title = notificationContent.Title,
         };
-        
-        _logger.LogInformation($"Notification for donor {notification.DonorId} was successfully built.");
         return notification;
     }
     
     private async Task<NotificationContent> BuildNotificationContentAsync(int collectionFacilityId, ENotificationType notificationType)
     {
+        await Task.Delay(1000);
         var notificationContent = new NotificationContent
         {
             Title = "Test title",

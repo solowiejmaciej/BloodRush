@@ -6,33 +6,43 @@ using BloodRush.API.Entities.Enums;
 using BloodRush.API.Interfaces;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 
 #endregion
 
-namespace BloodRush.API.Handlers;
+namespace BloodRush.API.Handlers.Donors;
 
 public class AddNewDonorCommandHandler : IRequestHandler<AddNewDonorCommand, Guid>
 {
     private readonly IDonorRepository _donorRepository;
     private readonly IMapper _mapper;
     private readonly IEventPublisher _eventPublisher;
+    private readonly ILoginManager _loginManager;
+    private readonly IPasswordHasher<Donor> _passwordHasher;
+    private readonly ILogger<AddNewDonorCommandHandler> _logger;
 
     public AddNewDonorCommandHandler(
         IDonorRepository donorRepository,
         IMapper mapper,
-        IEventPublisher eventPublisher
+        IEventPublisher eventPublisher,
+        ILoginManager loginManager,
+        ILogger<AddNewDonorCommandHandler> logger
     )
     {
         _donorRepository = donorRepository;
         _mapper = mapper;
         _eventPublisher = eventPublisher;
+        _loginManager = loginManager;
+        _logger = logger;
     }
 
     public async Task<Guid> Handle(AddNewDonorCommand request, CancellationToken cancellationToken)
     {
         var donor = _mapper.Map<Donor>(request);
-        await _eventPublisher.PublishDonorCreatedEventAsync(donor.Id, cancellationToken);
-        return await _donorRepository.AddDonorAsync(donor);
+        var donorWithHashedPassword = _loginManager.HashPassword(donor, request.Password);
+        var id = await _donorRepository.AddDonorAsync(donorWithHashedPassword);
+        await _eventPublisher.PublishDonorCreatedEventAsync(id, cancellationToken);
+        return id;
     }
 }
 
@@ -44,7 +54,7 @@ public record AddNewDonorCommand : IRequest<Guid>
     public required ESex Sex { get; set; }
     public required DateTime DateOfBirth { get; set; }
     public required EBloodType BloodType { get; set; }
-    public required int PhoneNumber { get; set; }
+    public required string PhoneNumber { get; set; }
     public required string Email { get; set; }
     public required string HomeAddress { get; set; }
     public required string Pesel { get; set; }
@@ -52,9 +62,14 @@ public record AddNewDonorCommand : IRequest<Guid>
 
 public class AddNewDonorCommandValidator : AbstractValidator<AddNewDonorCommand>
 {
-    public AddNewDonorCommandValidator()
+    private readonly IDonorRepository _donorRepository; // Inject the IDonorRepository
+
+    public AddNewDonorCommandValidator(IDonorRepository donorRepository)
     {
-        RuleFor(x => x.Email).EmailAddress();
+        _donorRepository = donorRepository;
+
+        RuleFor(x => x.Email)
+            .EmailAddress();
         RuleFor(x => x.FirstName)
             .NotEmpty()
             .MaximumLength(50)
@@ -72,8 +87,17 @@ public class AddNewDonorCommandValidator : AbstractValidator<AddNewDonorCommand>
         RuleFor(x => x.HomeAddress)
             .NotEmpty();
         RuleFor(x => x.PhoneNumber)
+            .Must(UniquePhoneNumber).WithMessage("Phone number already exists")
+            .MinimumLength(9)
+            .MaximumLength(11)
             .NotEmpty();
         RuleFor(x => x.BloodType)
             .IsInEnum();
+    }
+
+    private bool UniquePhoneNumber(string phoneNumber)
+    {
+        var donorInDb = _donorRepository.GetDonorByPhoneNumberAsync(phoneNumber).Result;
+        return donorInDb == null;
     }
 }

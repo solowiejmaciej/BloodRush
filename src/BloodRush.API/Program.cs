@@ -2,6 +2,7 @@
 
 using BloodRush.API.Extensions;
 using BloodRush.API.Interfaces;
+using BloodRush.API.Middleware;
 using BloodRush.API.Repositories;
 
 #endregion
@@ -15,7 +16,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IDonorRepository, DonorRepository>();
-
+builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
 builder.Logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning);
 
@@ -26,15 +27,19 @@ var configuration = new ConfigurationBuilder()
 
 builder.Services.AddGeneralServiceCollection(configuration);
 builder.Services.AddEventsServiceCollectionExtension(configuration);
+builder.Services.AddAuthServiceCollectionExtension(configuration);
+builder.Services.AddValidationServiceCollectionExtension();
+builder.Services.AddSwaggerServiceCollectionExtension();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseHttpsRedirection();
 

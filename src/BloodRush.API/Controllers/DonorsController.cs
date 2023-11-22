@@ -2,8 +2,11 @@
 
 using BloodRush.API.Dtos;
 using BloodRush.API.Handlers;
+using BloodRush.API.Handlers.Donors;
 using BloodRush.API.Interfaces;
+using BloodRush.Contracts.Enums;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 #endregion
@@ -11,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BloodRush.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class DonorsController : ControllerBase
 {
     private readonly ILogger<DonorsController> _logger;
@@ -29,6 +32,7 @@ public class DonorsController : ControllerBase
         _eventPublisher = eventPublisher;
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<List<DonorDto>>> Get()
     {
@@ -52,12 +56,13 @@ public class DonorsController : ControllerBase
     [HttpPut("{id}")]
     public async Task Put([FromRoute] int id, [FromBody] string value)
     {
-        await _eventPublisher.PublishDonorCreatedEventAsync(Guid.NewGuid());
+        await _eventPublisher.PublishSendNotificationEventAsync(new Guid("d93b6282-23f9-4511-9b73-08dbe9187ea6"),
+            ENotificationType.Welcome, 1);
     }
 
     [HttpDelete("{id}")]
-    public async Task Delete([FromRoute] int id)
+    public async Task Delete([FromRoute] Guid id)
     {
-        await Task.CompletedTask;
+        await _mediator.Send(new DeleteDonorCommand { DonorId = id });
     }
 }

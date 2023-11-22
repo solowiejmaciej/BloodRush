@@ -12,6 +12,7 @@
         <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0"/>
         <PackageReference Include="MassTransit.RabbitMQ" Version="8.1.2"/>
         <PackageReference Include="MediatR" Version="12.1.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.14" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.14"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.14">
@@ -27,11 +28,13 @@
             <Link>.dockerignore</Link>
         </Content>
 
-        <ProjectReference Include="..\..\BloodRush.Contracts\BloodRush.Contracts.csproj"/>
-
-        <ProjectReference Include="..\BloodRush.Contracts\BloodRush.Contracts.csproj" />
+        <ProjectReference Include="..\BloodRush.Contracts\BloodRush.Contracts.csproj"/>
 
     </ItemGroup>
 
+
+    <ItemGroup>
+        <Folder Include="Migrations\"/>
+    </ItemGroup>
 
 </Project>

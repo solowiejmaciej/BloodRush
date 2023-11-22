@@ -62,4 +62,11 @@ public class NotificationsRepository : INotificationsRepository
         notificationInfo.NotificationChannel = channel;
         await _context.SaveChangesAsync();
     }
+
+    public async Task DeleteNotificationInfoAsync(Guid donorId)
+    {
+        var notificationInfo = await GetNotificationInfoByDonorIdAsync(donorId);
+        _context.Remove(notificationInfo);
+        await _context.SaveChangesAsync();
+    }
 }
