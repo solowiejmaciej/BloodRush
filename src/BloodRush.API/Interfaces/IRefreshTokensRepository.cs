@@ -1,4 +1,8 @@
+#region
+
 using BloodRush.API.Entities;
+
+#endregion
 
 namespace BloodRush.API.Interfaces;
 

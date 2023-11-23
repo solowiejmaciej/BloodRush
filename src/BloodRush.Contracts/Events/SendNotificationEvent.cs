@@ -1,4 +1,8 @@
+#region
+
 using BloodRush.Contracts.Enums;
+
+#endregion
 
 namespace BloodRush.Contracts.Events;
 

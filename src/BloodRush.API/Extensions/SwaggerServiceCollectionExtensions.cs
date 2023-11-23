@@ -1,13 +1,6 @@
 #region
 
-using System.Security.Cryptography;
-using BloodRush.API.Entities;
-using BloodRush.API.Interfaces;
-using BloodRush.API.Models.AppSettings;
-using BloodRush.API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 #endregion
@@ -36,7 +29,7 @@ public static class SwaggerServiceCollectionExtensions
                     Type = ReferenceType.SecurityScheme
                 }
             };
-            
+
             c.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
 
             c.AddSecurityRequirement(new OpenApiSecurityRequirement

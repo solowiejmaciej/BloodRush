@@ -1,7 +1,11 @@
+#region
+
 using BloodRush.API.Interfaces;
 using BloodRush.API.Models.Responses;
 using FluentValidation;
 using MediatR;
+
+#endregion
 
 namespace BloodRush.API.Handlers.Auth;
 
@@ -11,10 +15,11 @@ public class RefreshTokenCommandHandler : IRequestHandler<RefreshTokenCommand, L
 
     public RefreshTokenCommandHandler(
         ILoginManager loginManager
-        )
+    )
     {
         _loginManager = loginManager;
     }
+
     public async Task<LoginResult> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
         return await _loginManager.RefreshTokenAsync(request.JwtToken, request.RefreshToken);

@@ -4,5 +4,5 @@ public enum ENotificationType
 {
     Welcome,
     ThankYou,
-    RestingPeriodOver,
+    RestingPeriodOver
 }

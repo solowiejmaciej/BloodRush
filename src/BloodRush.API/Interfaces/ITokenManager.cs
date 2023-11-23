@@ -1,6 +1,9 @@
+#region
+
 using BloodRush.API.Entities;
 using BloodRush.API.Models.Auth;
-using BloodRush.API.Models.Responses;
+
+#endregion
 
 namespace BloodRush.API.Interfaces;
 

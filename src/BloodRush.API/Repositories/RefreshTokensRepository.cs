@@ -31,7 +31,7 @@ public class RefreshTokensRepository : IRefreshTokensRepository
         _dbContext.RefreshTokens.Update(value);
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
-    
+
     public async Task AddAsync(RefreshToken refreshToken, CancellationToken cancellationToken = default)
     {
         await _dbContext.AddAsync(refreshToken, cancellationToken);

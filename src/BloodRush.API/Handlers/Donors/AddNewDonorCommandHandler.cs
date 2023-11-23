@@ -6,7 +6,6 @@ using BloodRush.API.Entities.Enums;
 using BloodRush.API.Interfaces;
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 
 #endregion
 
@@ -18,28 +17,24 @@ public class AddNewDonorCommandHandler : IRequestHandler<AddNewDonorCommand, Gui
     private readonly IMapper _mapper;
     private readonly IEventPublisher _eventPublisher;
     private readonly ILoginManager _loginManager;
-    private readonly IPasswordHasher<Donor> _passwordHasher;
-    private readonly ILogger<AddNewDonorCommandHandler> _logger;
 
     public AddNewDonorCommandHandler(
         IDonorRepository donorRepository,
         IMapper mapper,
         IEventPublisher eventPublisher,
-        ILoginManager loginManager,
-        ILogger<AddNewDonorCommandHandler> logger
+        ILoginManager loginManager
     )
     {
         _donorRepository = donorRepository;
         _mapper = mapper;
         _eventPublisher = eventPublisher;
         _loginManager = loginManager;
-        _logger = logger;
     }
 
     public async Task<Guid> Handle(AddNewDonorCommand request, CancellationToken cancellationToken)
     {
         var donor = _mapper.Map<Donor>(request);
-        var donorWithHashedPassword = _loginManager.HashPassword(donor, request.Password);
+        var donorWithHashedPassword = _loginManager.HashPassword(donor, donor.Password);
         var id = await _donorRepository.AddDonorAsync(donorWithHashedPassword);
         await _eventPublisher.PublishDonorCreatedEventAsync(id, cancellationToken);
         return id;

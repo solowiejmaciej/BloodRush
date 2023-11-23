@@ -1,3 +1,5 @@
+#region
+
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -7,6 +9,8 @@ using BloodRush.API.Models.AppSettings;
 using BloodRush.API.Models.Auth;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+
+#endregion
 
 namespace BloodRush.API.Services;
 
@@ -22,7 +26,7 @@ public class TokenManager : ITokenManager
         ILogger<TokenManager> logger,
         IRefreshTokensRepository refreshTokensRepository,
         TokenValidationParameters refreshTokenValidationParameters
-        )
+    )
     {
         _authSettings = authSettings;
         _logger = logger;
@@ -32,7 +36,7 @@ public class TokenManager : ITokenManager
 
     public async Task<JwtTokenInfo> GenerateJwtTokenAsync(Guid donorId)
     {
-         var expires = DateTime.Now.AddMinutes(_authSettings.Value.DurationInMinutes);
+        var expires = DateTime.Now.AddMinutes(_authSettings.Value.DurationInMinutes);
 
         var claims = new List<Claim>
         {
@@ -70,10 +74,10 @@ public class TokenManager : ITokenManager
 
         return response;
     }
-    
+
     public async Task<RefreshToken> GenerateRefreshTokenAsync(string jit, Guid donorId)
     {
-        var refreshToken = new RefreshToken()
+        var refreshToken = new RefreshToken
         {
             JwtId = jit,
             CreationDate = DateTime.Now,
@@ -121,7 +125,8 @@ public class TokenManager : ITokenManager
         var tokenHandler = new JwtSecurityTokenHandler();
         try
         {
-            var principal = tokenHandler.ValidateToken(token, _refreshTokenValidationParameters, out var validatedToken);
+            var principal =
+                tokenHandler.ValidateToken(token, _refreshTokenValidationParameters, out var validatedToken);
             if (!IsJwtWithValidSecurityAlgorithm(validatedToken)) return null;
 
             return principal;

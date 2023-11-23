@@ -3,7 +3,6 @@
 using AutoMapper;
 using BloodRush.API.Dtos;
 using BloodRush.API.Entities;
-using BloodRush.API.Handlers;
 using BloodRush.API.Handlers.Donors;
 
 #endregion

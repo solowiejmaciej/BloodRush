@@ -1,7 +1,5 @@
 #region
 
-using System.Reflection;
-using BloodRush.API.Handlers;
 using BloodRush.API.Handlers.Auth;
 using BloodRush.API.Handlers.Donors;
 using FluentValidation;
@@ -16,13 +14,12 @@ public static class ValidationServiceCollectionExtension
     public static void AddValidationServiceCollectionExtension(this IServiceCollection services)
     {
         services.AddFluentValidationAutoValidation();
-        
+
         services.AddScoped<IValidator<LoginWithEmailCommand>, LoginWithEmailCommandValidator>();
         services.AddScoped<IValidator<LoginWithPhoneNumberCommand>, LoginWithPhoneNumberCommandValidator>();
         services.AddScoped<IValidator<RefreshTokenCommand>, RefreshTokenCommandValidator>();
-        
+
         services.AddScoped<IValidator<AddNewDonorCommand>, AddNewDonorCommandValidator>();
         services.AddScoped<IValidator<DeleteDonorCommand>, DeleteDonorCommandValidator>();
-        
     }
 }

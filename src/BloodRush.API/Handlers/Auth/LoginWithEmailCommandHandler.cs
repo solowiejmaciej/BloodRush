@@ -1,6 +1,10 @@
+#region
+
 using BloodRush.API.Models.Responses;
 using FluentValidation;
 using MediatR;
+
+#endregion
 
 namespace BloodRush.API.Handlers.Auth;
 
@@ -11,6 +15,7 @@ public class LoginWithEmailCommandHandler : IRequestHandler<LoginWithEmailComman
         throw new NotImplementedException();
     }
 }
+
 public record LoginWithEmailCommand : IRequest<LoginResult>
 {
     public string Email { get; init; }

@@ -40,10 +40,10 @@ public class NotificationsRepository : INotificationsRepository
         // And still keep the one source of truth
         var query = $"SELECT PhoneNumber FROM [BloodRush].[dbo].[Donors] Where Id ='{id}'";
         var phoneNumber = await _context.Database.ExecuteSqlRawAsync(query, id);
-        
+
         var notificationInfo = await _context.DonorsNotificationInfo.FirstOrDefaultAsync(d => d.DonorId == id);
         if (notificationInfo is null) throw new NotificationProfileNotFoundException();
-        
+
         notificationInfo.PhoneNumber = phoneNumber.ToString();
         return notificationInfo;
     }

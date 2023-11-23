@@ -2,7 +2,11 @@
 
 #endregion
 
+#region
+
 using BloodRush.API.Exceptions;
+
+#endregion
 
 namespace BloodRush.API.Middleware;
 

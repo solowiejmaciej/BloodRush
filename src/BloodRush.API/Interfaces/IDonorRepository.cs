@@ -12,11 +12,10 @@ public interface IDonorRepository
     Task<Guid> AddDonorAsync(Donor donor);
     Task<Donor> GetDonorByIdAsync(Guid id);
     Task<List<Donor>> GetAllDonorsAsync();
-    Task<Donor?> GetDonorByPhoneNumberAsync(string username);
+    Task<Donor?> GetDonorByPhoneNumberAsync(string phoneNumber);
     Task<bool> DeleteDonorAsync(Guid requestId);
 
-    
-    
+
     Task<List<Donor?>?> GetDonorsByConditionAsync(Expression<Func<Donor?, bool>> expression);
     Task<DonorRestingPeriodInfo> GetRestingPeriodInfoByDonorIdAsync(Guid id);
     Task UpdateRestingPeriodInfoAsync(Guid id, int restingPeriodInMonths);

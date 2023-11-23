@@ -29,11 +29,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\BloodRush.Contracts\BloodRush.Contracts.csproj" />
+        <ProjectReference Include="..\BloodRush.Contracts\BloodRush.Contracts.csproj"/>
 
     </ItemGroup>
-
-
 
 
 </Project>

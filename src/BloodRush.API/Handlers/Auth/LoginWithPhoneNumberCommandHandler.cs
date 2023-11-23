@@ -1,7 +1,11 @@
+#region
+
 using BloodRush.API.Interfaces;
 using BloodRush.API.Models.Responses;
 using FluentValidation;
 using MediatR;
+
+#endregion
 
 namespace BloodRush.API.Handlers.Auth;
 
@@ -11,11 +15,11 @@ public class LoginWithPhoneNumberCommandHandler : IRequestHandler<LoginWithPhone
 
     public LoginWithPhoneNumberCommandHandler(
         ILoginManager loginManager
-        )
+    )
     {
         _loginManager = loginManager;
     }
-    
+
     public async Task<LoginResult> Handle(LoginWithPhoneNumberCommand request, CancellationToken cancellationToken)
     {
         return await _loginManager.LoginWithPhoneNumberAsync(request.PhoneNumber, request.Password);

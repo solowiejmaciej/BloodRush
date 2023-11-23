@@ -7,7 +7,7 @@ using MediatR;
 
 #endregion
 
-namespace BloodRush.API.Handlers;
+namespace BloodRush.API.Handlers.Donors;
 
 public class GetAllDonorsQueryHandler : IRequestHandler<GetAllDonorsQuery, List<DonorDto>>
 {

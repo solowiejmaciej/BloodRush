@@ -1,4 +1,8 @@
+#region
+
 using BloodRush.API.Models.Auth;
+
+#endregion
 
 namespace BloodRush.API.Models.Responses;
 

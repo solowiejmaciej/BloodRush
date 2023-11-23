@@ -1,4 +1,8 @@
+#region
+
 using BloodRush.Notifier.Entities;
+
+#endregion
 
 namespace BloodRush.Notifier.Interfaces;
 

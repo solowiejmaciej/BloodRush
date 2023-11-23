@@ -27,19 +27,19 @@ public static class AuthServiceCollectionExtensions
         services.AddScoped<ITokenManager, TokenManager>();
         services.AddScoped<IPasswordHasher<Donor>, PasswordHasher<Donor>>();
         services.AddScoped<IRefreshTokensRepository, RefreshTokensRepository>();
-        
+
         services.Configure<AuthSettings>(authConfigurationSection);
         services.AddHttpContextAccessor();
         services.AddScoped<IUserContextAccessor, UserContextAccessorAccessor>();
 
-        
+
         var rsa = RSA.Create();
 
         rsa.ImportSubjectPublicKeyInfo(
             Convert.FromBase64String(authSettings.PublicKey),
             out var _
         );
-        
+
         var tokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
@@ -49,7 +49,7 @@ public static class AuthServiceCollectionExtensions
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero
         };
-        
+
         var refreshTokenValidationParameter = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
@@ -58,11 +58,11 @@ public static class AuthServiceCollectionExtensions
             IssuerSigningKey = new RsaSecurityKey(rsa),
             ValidateLifetime = false
         };
-        
+
         services.AddSingleton(refreshTokenValidationParameter);
         services.AddSingleton(tokenValidationParameters);
 
-        
+
         services.AddAuthentication(option =>
         {
             option.DefaultAuthenticateScheme = "Bearer";
@@ -74,6 +74,5 @@ public static class AuthServiceCollectionExtensions
             cfg.SaveToken = true;
             cfg.TokenValidationParameters = tokenValidationParameters;
         });
-
     }
 }

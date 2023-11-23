@@ -26,12 +26,12 @@ public class TokenController : ControllerBase
     [HttpPost("Donor/PhoneNumber")]
     public async Task<IActionResult> GenerateDonorToken(
         [FromBody] LoginWithPhoneNumberCommand command
-        )
+    )
     {
         var result = await _mediator.Send(command);
         return Ok(result);
     }
-    
+
     [HttpPost("Donor/Email")]
     public async Task<IActionResult> GenerateDonorToken(
         [FromBody] LoginWithEmailCommand command
@@ -44,7 +44,7 @@ public class TokenController : ControllerBase
     [HttpPost("Donor/Refresh")]
     public async Task<IActionResult> RefreshDonorToken(
         [FromBody] RefreshTokenCommand command
-        )
+    )
     {
         var result = await _mediator.Send(command);
         return Ok(result);

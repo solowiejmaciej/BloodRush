@@ -1,7 +1,11 @@
+#region
+
 using BloodRush.Contracts.Enums;
 using BloodRush.Contracts.Events;
 using BloodRush.Notifier.Entities;
 using BloodRush.Notifier.Interfaces;
+
+#endregion
 
 namespace BloodRush.Notifier.Builders;
 
@@ -13,15 +17,18 @@ public class NotificationBuilder : INotificationBuilder
     public NotificationBuilder(
         INotificationsRepository notificationsRepository,
         ILogger<NotificationBuilder> logger
-            )
+    )
     {
         _notificationsRepository = notificationsRepository;
         _logger = logger;
     }
+
     public async Task<Notification> BuildAsync(SendNotificationEvent notificationEvent)
     {
-        var donorNotificationInfo = await _notificationsRepository.GetNotificationInfoByDonorIdAsync(notificationEvent.DonorId);
-        var notificationContent = await BuildNotificationContentAsync(notificationEvent.CollectionFacilityId, notificationEvent.NotificationType);
+        var donorNotificationInfo =
+            await _notificationsRepository.GetNotificationInfoByDonorIdAsync(notificationEvent.DonorId);
+        var notificationContent = await BuildNotificationContentAsync(notificationEvent.CollectionFacilityId,
+            notificationEvent.NotificationType);
         var notification = new Notification
         {
             DonorId = notificationEvent.DonorId,
@@ -30,12 +37,13 @@ public class NotificationBuilder : INotificationBuilder
             PushNotificationToken = donorNotificationInfo.PushNotificationToken,
             PhoneNumber = donorNotificationInfo.PhoneNumber,
             Message = notificationContent.Message,
-            Title = notificationContent.Title,
+            Title = notificationContent.Title
         };
         return notification;
     }
-    
-    private async Task<NotificationContent> BuildNotificationContentAsync(int collectionFacilityId, ENotificationType notificationType)
+
+    private async Task<NotificationContent> BuildNotificationContentAsync(int collectionFacilityId,
+        ENotificationType notificationType)
     {
         await Task.Delay(1000);
         var notificationContent = new NotificationContent
@@ -45,11 +53,10 @@ public class NotificationBuilder : INotificationBuilder
         };
         return notificationContent;
     }
-    
+
     private class NotificationContent
     {
         public string? Title { get; set; }
         public string Message { get; set; }
     }
-
 }

@@ -1,8 +1,12 @@
+#region
+
 using BloodRush.API.Entities.Enums;
 using BloodRush.Contracts.Events;
 using BloodRush.Notifier.Exceptions;
 using BloodRush.Notifier.Interfaces;
 using MassTransit;
+
+#endregion
 
 namespace BloodRush.Notifier.Consumers;
 
@@ -15,15 +19,16 @@ public class SendNotificationConsumer : IConsumer<SendNotificationEvent>
         INotificationBuilder notificationBuilder,
         ILogger<SendNotificationConsumer> logger,
         ISender sender
-        )
+    )
     {
         _notificationBuilder = notificationBuilder;
         _sender = sender;
     }
+
     public async Task Consume(ConsumeContext<SendNotificationEvent> context)
     {
         var notificationEvent = context.Message;
-        var notification = await _notificationBuilder.BuildAsync(notificationEvent); 
+        var notification = await _notificationBuilder.BuildAsync(notificationEvent);
         switch (notification.NotificationChannel)
         {
             case ENotificationChannel.Sms:
