@@ -30,6 +30,11 @@ public class ErrorHandlingMiddleware : IMiddleware
         {
             context.Response.StatusCode = 404;
             await context.Response.WriteAsync(notFoundException.Message);
+        }        
+        catch (DonorIsRestingException restingException)
+        {
+            context.Response.StatusCode = 400;
+            await context.Response.WriteAsync(restingException.Message);
         }
         catch (UnauthorizedAccessException unauthorizedAccess)
         {

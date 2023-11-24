@@ -58,6 +58,15 @@ public class DonorRepository : IDonorRepository
         return true;
     }
 
+    public async Task UpdateIsRestingPeriodActiveAsync(Guid donorId, DateTime notificationDonationDate,
+        bool isRestingPeriodActive)
+    {
+        var restingPeriodInfo = await GetRestingPeriodInfoByDonorIdAsync(donorId);
+        restingPeriodInfo.IsRestingPeriodActive = isRestingPeriodActive;
+        restingPeriodInfo.LastDonationDate = notificationDonationDate;
+        await _context.SaveChangesAsync();
+    }
+
     public async Task<List<Donor?>?> GetDonorsByConditionAsync(Expression<Func<Donor?, bool>> expression)
     {
         return await _context.Donors.Where(expression).ToListAsync();

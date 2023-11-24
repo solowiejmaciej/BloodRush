@@ -15,8 +15,8 @@ public interface IDonorRepository
     Task<Donor?> GetDonorByPhoneNumberAsync(string phoneNumber);
     Task<bool> DeleteDonorAsync(Guid requestId);
 
-
-    Task<List<Donor?>?> GetDonorsByConditionAsync(Expression<Func<Donor?, bool>> expression);
+    
+    Task UpdateIsRestingPeriodActiveAsync(Guid donorId, DateTime notificationDonationDate, bool isRestingPeriodActive);
     Task<DonorRestingPeriodInfo> GetRestingPeriodInfoByDonorIdAsync(Guid id);
     Task UpdateRestingPeriodInfoAsync(Guid id, int restingPeriodInMonths);
 }
