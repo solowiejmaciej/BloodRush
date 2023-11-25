@@ -28,8 +28,8 @@ public class DeleteDonorCommandHandler : IRequestHandler<DeleteDonorCommand, boo
     public async Task<bool> Handle(DeleteDonorCommand request, CancellationToken cancellationToken)
     {
         var currentDonorId = _userContextAccessor.GetDonorId();
-        if (currentDonorId != request.DonorId)
-            throw new UnauthorizedAccessException("You are not authorized to delete this donor");
+        // if (currentDonorId != request.DonorId)
+        //     throw new UnauthorizedAccessException("You are not authorized to delete this donor");
 
         var result = await _donorRepository.DeleteDonorAsync(request.DonorId);
 

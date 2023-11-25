@@ -1,5 +1,6 @@
 #region
 
+using BloodRush.API.Entities.Enums;
 using BloodRush.Contracts.Enums;
 using BloodRush.Contracts.Events;
 using BloodRush.Notifier.Entities;
@@ -25,8 +26,8 @@ public class NotificationBuilder : INotificationBuilder
 
     public async Task<Notification> BuildAsync(SendNotificationEvent notificationEvent)
     {
-        var donorNotificationInfo =
-            await _notificationsRepository.GetNotificationInfoByDonorIdAsync(notificationEvent.DonorId);
+        var donorNotificationInfo = await _notificationsRepository.GetNotificationInfoByDonorIdAsync(notificationEvent.DonorId);
+        
         var notificationContent = await BuildNotificationContentAsync(notificationEvent.CollectionFacilityId,
             notificationEvent.NotificationType);
         var notification = new Notification
@@ -35,7 +36,7 @@ public class NotificationBuilder : INotificationBuilder
             CollectionFacilityId = notificationEvent.CollectionFacilityId,
             NotificationChannel = donorNotificationInfo.NotificationChannel,
             PushNotificationToken = donorNotificationInfo.PushNotificationToken,
-            PhoneNumber = donorNotificationInfo.PhoneNumber,
+            PhoneNumber = notificationEvent.PhoneNumber,
             Message = notificationContent.Message,
             Title = notificationContent.Title
         };

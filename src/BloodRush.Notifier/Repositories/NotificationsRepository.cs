@@ -1,11 +1,13 @@
 #region
 
+using BloodRush.API.Entities;
 using BloodRush.API.Entities.Enums;
 using BloodRush.Notifier.Constants;
 using BloodRush.Notifier.Entities;
 using BloodRush.Notifier.Entities.DbContext;
 using BloodRush.Notifier.Exceptions;
 using BloodRush.Notifier.Interfaces;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 #endregion
@@ -36,15 +38,9 @@ public class NotificationsRepository : INotificationsRepository
 
     public async Task<DonorNotificationInfo> GetNotificationInfoByDonorIdAsync(Guid id)
     {
-        // This was made because of the I need to get phone number from Donors table
-        // And still keep the one source of truth
-        var query = $"SELECT PhoneNumber FROM [BloodRush].[dbo].[Donors] Where Id ='{id}'";
-        var phoneNumber = await _context.Database.ExecuteSqlRawAsync(query, id);
-
         var notificationInfo = await _context.DonorsNotificationInfo.FirstOrDefaultAsync(d => d.DonorId == id);
         if (notificationInfo is null) throw new NotificationProfileNotFoundException();
 
-        notificationInfo.PhoneNumber = phoneNumber.ToString();
         return notificationInfo;
     }
 

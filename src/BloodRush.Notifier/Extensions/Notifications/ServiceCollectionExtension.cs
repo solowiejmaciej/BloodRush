@@ -2,6 +2,7 @@
 
 using BloodRush.Notifier.Builders;
 using BloodRush.Notifier.Interfaces;
+using BloodRush.Notifier.Models.AppSettings;
 using BloodRush.Notifier.Repositories;
 using BloodRush.Notifier.Services;
 
@@ -16,5 +17,11 @@ public static class ServiceCollectionExtension
         services.AddScoped<INotificationsRepository, NotificationsRepository>();
         services.AddScoped<INotificationBuilder, NotificationBuilder>();
         services.AddScoped<ISender, Sender>();
+        
+        var smsApiSettings = new SmsApiSettings();
+        var settings = configuration.GetSection("SmsApiSettings");
+        settings.Bind(smsApiSettings);
+        
+        services.Configure<SmsApiSettings>(settings);
     }
 }

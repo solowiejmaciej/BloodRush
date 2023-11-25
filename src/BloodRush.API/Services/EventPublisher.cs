@@ -13,14 +13,15 @@ public class EventPublisher : IEventPublisher
 {
     private readonly IPublishEndpoint _publishEndpoint;
     private readonly ILogger<EventPublisher> _logger;
+    private readonly IDonorRepository _donorRepository;
 
     public EventPublisher(
         IPublishEndpoint publishEndpoint,
-        ILogger<EventPublisher> logger
-    )
+        ILogger<EventPublisher> logger, IDonorRepository donorRepository)
     {
         _publishEndpoint = publishEndpoint;
         _logger = logger;
+        _donorRepository = donorRepository;
     }
 
     public async Task PublishDonorCreatedEventAsync(Guid donorId, CancellationToken cancellationToken = default)
@@ -28,15 +29,17 @@ public class EventPublisher : IEventPublisher
         await _publishEndpoint.Publish(new DonorCreatedEvent(donorId), cancellationToken);
     }
 
-    public Task PublishSendNotificationEventAsync(Guid donorId, ENotificationType notificationType,
+    public async Task PublishSendNotificationEventAsync(Guid donorId, ENotificationType notificationType,
         int collectionFacilityId,
         CancellationToken cancellationToken = default)
     {
-        return _publishEndpoint.Publish(new SendNotificationEvent
+        var donor = await _donorRepository.GetDonorByIdAsync(donorId);
+        await _publishEndpoint.Publish(new SendNotificationEvent
         {
             DonorId = donorId,
             CollectionFacilityId = collectionFacilityId,
-            NotificationType = notificationType
+            NotificationType = notificationType,
+            PhoneNumber = donor.PhoneNumber
         }, cancellationToken);
     }
 

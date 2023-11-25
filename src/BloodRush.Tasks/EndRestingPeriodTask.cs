@@ -6,16 +6,16 @@ using System.Collections.Generic;
 
 namespace BloodRush.Tasks
 {
-    public class UpdateRestingPeriodTask
+    public class EndRestingPeriodTask
     {
         private readonly ILogger _logger;
 
-        public UpdateRestingPeriodTask(ILoggerFactory loggerFactory)
+        public EndRestingPeriodTask(ILoggerFactory loggerFactory)
         {
-            _logger = loggerFactory.CreateLogger<UpdateRestingPeriodTask>();
+            _logger = loggerFactory.CreateLogger<EndRestingPeriodTask>();
         }
 
-        [Function("UpdateRestingPeriodTask")]
+        [Function("EndRestingPeriodTask")]
         public void Run([TimerTrigger("* * * * *")] TimerInfo myTimer, ExecutionContext context)
         {
             using var connection = new SqlConnection(Environment.GetEnvironmentVariable("DatabaseConnectionString"));
