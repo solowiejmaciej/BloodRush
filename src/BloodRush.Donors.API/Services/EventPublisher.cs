@@ -1,5 +1,6 @@
 ﻿#region
 
+using BloodRush.API.Entities.Enums;
 using BloodRush.API.Interfaces;
 using BloodRush.Contracts.Enums;
 using BloodRush.Contracts.Events;
@@ -46,5 +47,14 @@ public class EventPublisher : IEventPublisher
     public async Task PublishDonorDeletedEventAsync(Guid requestDonorId, CancellationToken cancellationToken = default)
     {
         await _publishEndpoint.Publish(new DonorDeletedEvent(requestDonorId), cancellationToken);
+    }
+    
+
+    public async Task PublishBloodNeedCreatedEventAsync(int collectionFacilityId, bool isUrgent,
+        CancellationToken cancellationToken = default)
+    { 
+        var bloodNeedCreatedEvent = new BloodNeedCreatedEvent { CollectionFacilityId = collectionFacilityId, IsUrgent = isUrgent}; 
+        
+        await _publishEndpoint.Publish(bloodNeedCreatedEvent, cancellationToken);
     }
 }

@@ -8,5 +8,14 @@
       },
       "enableLiveMetricsFilters": true
     }
+  },
+  "extensions": {
+    "rabbitMQ": {
+      "prefetchCount": 100,
+      "fetchedQueue": "queue",
+      "destinationQueue": "queue",
+      "connectionString": "amqp://guest:guest@localhost:5672",
+      "port": 10
+    }
   }
 }

@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodRush.API", "src\BloodRush.API\BloodRush.API.csproj", "{07316F78-3D52-49D0-8800-57FCA454D0CD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodRush.Donors.API", "src\BloodRush.Donors.API\BloodRush.Donors.API.csproj", "{07316F78-3D52-49D0-8800-57FCA454D0CD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodRush.Notifier", "src\BloodRush.Notifier\BloodRush.Notifier.csproj", "{551DF189-7882-4DFF-B1B9-A991E72AA1D5}"
 EndProject
@@ -10,9 +10,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2BE3E0F7-D6F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1F0CF482-5366-471F-AE57-FDED7600D1AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodRush.API.Tests", "tests\BloodRush.API.Tests\BloodRush.API.Tests.csproj", "{744FBC12-3CCF-4725-96B4-6154F49FE76C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodRush.Donors.API.Tests", "tests\BloodRush.Donors.API.Tests\BloodRush.Donors.API.Tests.csproj", "{744FBC12-3CCF-4725-96B4-6154F49FE76C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodRush.Tasks", "src\BloodRush.Tasks\BloodRush.Tasks.csproj", "{6CBF3A23-C29E-421A-88CA-A23FC3907A2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodRush.DonationFacility.API", "src\BloodRush.DonationFacility.API\BloodRush.DonationFacility.API.csproj", "{9B420470-CFBE-4D31-974E-31F2CC53C55C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,6 +42,10 @@ Global
 		{6CBF3A23-C29E-421A-88CA-A23FC3907A2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6CBF3A23-C29E-421A-88CA-A23FC3907A2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6CBF3A23-C29E-421A-88CA-A23FC3907A2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B420470-CFBE-4D31-974E-31F2CC53C55C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B420470-CFBE-4D31-974E-31F2CC53C55C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B420470-CFBE-4D31-974E-31F2CC53C55C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B420470-CFBE-4D31-974E-31F2CC53C55C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{07316F78-3D52-49D0-8800-57FCA454D0CD} = {2BE3E0F7-D6FA-4A6D-A8AD-55E7829CCA65}
@@ -47,5 +53,6 @@ Global
 		{551DF189-7882-4DFF-B1B9-A991E72AA1D5} = {2BE3E0F7-D6FA-4A6D-A8AD-55E7829CCA65}
 		{744FBC12-3CCF-4725-96B4-6154F49FE76C} = {1F0CF482-5366-471F-AE57-FDED7600D1AE}
 		{6CBF3A23-C29E-421A-88CA-A23FC3907A2D} = {2BE3E0F7-D6FA-4A6D-A8AD-55E7829CCA65}
+		{9B420470-CFBE-4D31-974E-31F2CC53C55C} = {2BE3E0F7-D6FA-4A6D-A8AD-55E7829CCA65}
 	EndGlobalSection
 EndGlobal

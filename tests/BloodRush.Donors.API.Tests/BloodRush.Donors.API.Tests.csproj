@@ -6,6 +6,8 @@
         <Nullable>enable</Nullable>
 
         <IsPackable>false</IsPackable>
+
+        <RootNamespace>BloodRush.API.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -25,7 +27,7 @@
 
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\BloodRush.API\BloodRush.API.csproj"/>
+        <ProjectReference Include="..\..\src\BloodRush.Donors.API\BloodRush.Donors.API.csproj" />
     </ItemGroup>
 
 

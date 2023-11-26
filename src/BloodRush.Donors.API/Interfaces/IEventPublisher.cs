@@ -4,6 +4,7 @@
 
 #region
 
+using BloodRush.API.Entities.Enums;
 using BloodRush.Contracts.Enums;
 
 #endregion
@@ -18,4 +19,5 @@ public interface IEventPublisher
         CancellationToken cancellationToken = default);
 
     Task PublishDonorDeletedEventAsync(Guid requestDonorId, CancellationToken cancellationToken = default);
+    Task PublishBloodNeedCreatedEventAsync(int collectionFacilityId, bool isUrgent ,CancellationToken cancellationToken = default);
 }
