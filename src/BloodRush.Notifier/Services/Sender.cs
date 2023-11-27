@@ -1,6 +1,8 @@
 #region
 
+using BloodRush.API.Entities.Enums;
 using BloodRush.Notifier.Entities;
+using BloodRush.Notifier.Exceptions;
 using BloodRush.Notifier.Interfaces;
 using BloodRush.Notifier.Models.AppSettings;
 using Microsoft.Extensions.Options;
@@ -24,8 +26,23 @@ public class Sender : ISender
         _config = config;
         _logger = logger;
     }
-
-    public async Task SendSmsAsync(Notification notification)
+    
+    public async Task SendAsync (Notification notification)
+    {
+        switch (notification.NotificationChannel)
+        {
+            case ENotificationChannel.Sms:
+                await SendSmsAsync(notification);
+                break;
+            case ENotificationChannel.Push:
+                await SendPushAsync(notification);
+                break;
+            default:
+                throw new InvalidNotificationChannelException();
+        }
+    }
+    
+    private async Task SendSmsAsync(Notification notification)
     {
         var baseUrl = _config.Value.ApiUrl;
         var options = new RestClientOptions(baseUrl);
@@ -53,7 +70,7 @@ public class Sender : ISender
         _logger.LogInformation("Sms sent successfully");
     }
 
-    public async Task SendPushAsync(Notification notification)
+    private async Task SendPushAsync(Notification notification)
     {
         _logger.LogInformation("Sending Push");
     }

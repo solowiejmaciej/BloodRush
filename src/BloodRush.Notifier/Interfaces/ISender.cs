@@ -8,6 +8,5 @@ namespace BloodRush.Notifier.Interfaces;
 
 public interface ISender
 {
-    Task SendSmsAsync(Notification notification);
-    Task SendPushAsync(Notification notification);
+    Task SendAsync(Notification notification);
 }

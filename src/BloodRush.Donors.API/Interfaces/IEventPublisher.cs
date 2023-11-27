@@ -13,11 +13,8 @@ namespace BloodRush.API.Interfaces;
 
 public interface IEventPublisher
 {
-    Task PublishDonorCreatedEventAsync(Guid donorId, CancellationToken cancellationToken = default);
-
-    Task PublishSendNotificationEventAsync(Guid donorId, ENotificationType notificationType, int collectionFacilityId,
+    Task PublishDonorCreatedEventAsync(Guid donorId, string donorPhoneNumber,
         CancellationToken cancellationToken = default);
 
     Task PublishDonorDeletedEventAsync(Guid requestDonorId, CancellationToken cancellationToken = default);
-    Task PublishBloodNeedCreatedEventAsync(int collectionFacilityId, bool isUrgent ,CancellationToken cancellationToken = default);
 }

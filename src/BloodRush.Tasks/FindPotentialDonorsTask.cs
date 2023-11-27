@@ -15,7 +15,7 @@ public class FindPotentialDonorsTask
         _logger = logger;
     }
 
-    [Function(nameof(FindPotentialDonorsTask))]
+    [Function("FindPotentialDonorsTask")]
     //[RabbitMQOutput(QueueName = RabbitQueues.NotificationsQueue, ConnectionStringSetting = "RabbitMQConnection")]
     public void Run([RabbitMQTrigger(RabbitQueues.BloodNeedCreated, ConnectionStringSetting = "RabbitMQConnection")] RabbitMqMessage item,
         FunctionContext context)

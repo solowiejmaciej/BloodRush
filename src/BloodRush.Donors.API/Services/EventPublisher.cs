@@ -25,24 +25,13 @@ public class EventPublisher : IEventPublisher
         _donorRepository = donorRepository;
     }
 
-    public async Task PublishDonorCreatedEventAsync(Guid donorId, CancellationToken cancellationToken = default)
-    {
-        await _publishEndpoint.Publish(new DonorCreatedEvent(donorId), cancellationToken);
-    }
-
-    public async Task PublishSendNotificationEventAsync(Guid donorId, ENotificationType notificationType,
-        int collectionFacilityId,
+    public async Task PublishDonorCreatedEventAsync(Guid donorId, string donorPhoneNumber,
         CancellationToken cancellationToken = default)
     {
-        var donor = await _donorRepository.GetDonorByIdAsync(donorId);
-        await _publishEndpoint.Publish(new SendNotificationEvent
-        {
-            DonorId = donorId,
-            CollectionFacilityId = collectionFacilityId,
-            NotificationType = notificationType,
-            PhoneNumber = donor.PhoneNumber
-        }, cancellationToken);
+        await _publishEndpoint.Publish(new DonorCreatedEvent(donorId, donorPhoneNumber), cancellationToken);
     }
+
+
 
     public async Task PublishDonorDeletedEventAsync(Guid requestDonorId, CancellationToken cancellationToken = default)
     {

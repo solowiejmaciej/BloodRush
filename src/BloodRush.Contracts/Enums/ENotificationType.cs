@@ -7,4 +7,5 @@ public enum ENotificationType
     RestingPeriodOver,
     BloodNeed,
     UrgentBloodNeed,
+    DonationReminder
 }

@@ -30,7 +30,6 @@ builder.Services.AddEventsServiceCollectionExtension(configuration);
 builder.Services.AddAuthServiceCollectionExtension(configuration);
 builder.Services.AddValidationServiceCollectionExtension();
 builder.Services.AddSwaggerServiceCollectionExtension();
-builder.Services.AddDonationServiceCollectionExtension();
 
 var app = builder.Build();
 

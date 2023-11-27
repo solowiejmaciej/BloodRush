@@ -1,7 +1,6 @@
 #region
 
 using System.Linq.Expressions;
-using BloodRush.API.Constants;
 using BloodRush.API.Entities;
 using BloodRush.API.Entities.DbContext;
 using BloodRush.API.Entities.Enums;
@@ -28,7 +27,6 @@ public class DonorRepository : IDonorRepository
     {
         var addedDonor = await _context.AddAsync(donor);
         await _context.SaveChangesAsync();
-        await AddDefaultRestingPeriodInfoAsync(addedDonor.Entity.Id);
         return addedDonor.Entity.Id;
     }
 
@@ -58,55 +56,8 @@ public class DonorRepository : IDonorRepository
         return true;
     }
 
-    public async Task UpdateIsRestingPeriodActiveAsync(Guid donorId, DateTime notificationDonationDate,
-        bool isRestingPeriodActive)
+    public Task AddDefaultRestingPeriodInfoAsync(Guid donorId)
     {
-        var restingPeriodInfo = await GetRestingPeriodInfoByDonorIdAsync(donorId);
-        restingPeriodInfo.IsRestingPeriodActive = isRestingPeriodActive;
-        restingPeriodInfo.LastDonationDate = notificationDonationDate;
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task<List<Donor?>?> GetDonorsByConditionAsync(Expression<Func<Donor?, bool>> expression)
-    {
-        return await _context.Donors.Where(expression).ToListAsync();
-    }
-
-    private async Task AddDefaultRestingPeriodInfoAsync(Guid donorId)
-    {
-        var donor = await GetDonorByIdAsync(donorId);
-
-        if (donor.Sex == ESex.Female)
-        {
-            await _context.AddAsync(new DonorRestingPeriodInfo
-            {
-                DonorId = donorId,
-                RestingPeriodInMonths = DonorConstants.FemaleDefaultRestingPeriod
-            });
-            await _context.SaveChangesAsync();
-        }
-        else
-        {
-            await _context.AddAsync(new DonorRestingPeriodInfo
-            {
-                DonorId = donorId,
-                RestingPeriodInMonths = DonorConstants.MaleDefaultRestingPeriod
-            });
-            await _context.SaveChangesAsync();
-        }
-    }
-
-    public async Task<DonorRestingPeriodInfo> GetRestingPeriodInfoByDonorIdAsync(Guid id)
-    {
-        var restingPeriodInfo = await _context.DonorsRestingPeriodInfo.FirstOrDefaultAsync(d => d.DonorId == id);
-        if (restingPeriodInfo is null) throw new RestingPeriodNotFoundException();
-        return restingPeriodInfo;
-    }
-
-    public async Task UpdateRestingPeriodInfoAsync(Guid id, int restingPeriodInMonths)
-    {
-        var restingPeriodInfo = await GetRestingPeriodInfoByDonorIdAsync(id);
-        restingPeriodInfo.RestingPeriodInMonths = restingPeriodInMonths;
-        await _context.SaveChangesAsync();
+        throw new NotImplementedException();
     }
 }

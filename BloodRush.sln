@@ -14,7 +14,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodRush.Donors.API.Tests"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodRush.Tasks", "src\BloodRush.Tasks\BloodRush.Tasks.csproj", "{6CBF3A23-C29E-421A-88CA-A23FC3907A2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodRush.DonationFacility.API", "src\BloodRush.DonationFacility.API\BloodRush.DonationFacility.API.csproj", "{9B420470-CFBE-4D31-974E-31F2CC53C55C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BloodRush.Facility.API", "src\BloodRush.Facility.API\BloodRush.Facility.API.csproj", "{9B420470-CFBE-4D31-974E-31F2CC53C55C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

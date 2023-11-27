@@ -3,6 +3,7 @@
 using BloodRush.API.Dtos;
 using BloodRush.API.Handlers.Donors;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 #endregion
@@ -23,16 +24,6 @@ public class DonorsController : ControllerBase
     }
 
     //[Authorize]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [HttpGet]
-    public async Task<ActionResult<List<DonorDto>>> Get()
-    {
-        return Ok(await _mediator.Send(new GetAllDonorsQuery()));
-    }
-
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status200OK)]
     [HttpGet("{id:Guid}")]
     public async Task<ActionResult<DonorDto>> Get([FromRoute] Guid id)
     {
@@ -57,6 +48,7 @@ public class DonorsController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete([FromRoute] Guid id)
     {

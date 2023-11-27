@@ -1,8 +1,7 @@
 #region
-
-using BloodRush.API.Entities.Enums;
 using BloodRush.Contracts.Enums;
 using BloodRush.Contracts.Events;
+using BloodRush.Notifier.Constants;
 using BloodRush.Notifier.Entities;
 using BloodRush.Notifier.Interfaces;
 
@@ -24,19 +23,19 @@ public class NotificationBuilder : INotificationBuilder
         _logger = logger;
     }
 
-    public async Task<Notification> BuildAsync(SendNotificationEvent notificationEvent)
+    public async Task<Notification> BuildAsync(Guid donorId, string phoneNumber ,int collectionFacilityId, ENotificationType notificationType)
     {
-        var donorNotificationInfo = await _notificationsRepository.GetNotificationInfoByDonorIdAsync(notificationEvent.DonorId);
+        var donorNotificationInfo = await _notificationsRepository.GetNotificationInfoByDonorIdAsync(donorId);
         
-        var notificationContent = await BuildNotificationContentAsync(notificationEvent.CollectionFacilityId,
-            notificationEvent.NotificationType);
+        var notificationContent = await BuildNotificationContentAsync(collectionFacilityId,
+            notificationType);
         var notification = new Notification
         {
-            DonorId = notificationEvent.DonorId,
-            CollectionFacilityId = notificationEvent.CollectionFacilityId,
+            DonorId = donorId,
+            CollectionFacilityId = collectionFacilityId,
             NotificationChannel = donorNotificationInfo.NotificationChannel,
             PushNotificationToken = donorNotificationInfo.PushNotificationToken,
-            PhoneNumber = notificationEvent.PhoneNumber,
+            PhoneNumber = phoneNumber,
             Message = notificationContent.Message,
             Title = notificationContent.Title
         };
@@ -46,18 +45,18 @@ public class NotificationBuilder : INotificationBuilder
     private async Task<NotificationContent> BuildNotificationContentAsync(int collectionFacilityId,
         ENotificationType notificationType)
     {
-        await Task.Delay(1000);
-        var notificationContent = new NotificationContent
+        if (notificationType == ENotificationType.Welcome)
         {
-            Title = "Test title",
-            Message = "Test message"
-        };
+            //TODO: Temporary solution, need to be refactored to consider BloodRushNotifications
+            return new NotificationContent()
+            {
+                Message = CollectionFacilityConstants.DefaultWelcomeMessage,
+                Title = CollectionFacilityConstants.DefaultWelcomeTitle
+            };
+        }
+        var notificationContent = await _notificationsRepository.GetNotificationContentForFacilityAsync(collectionFacilityId,
+            notificationType);
         return notificationContent;
     }
-
-    private class NotificationContent
-    {
-        public string? Title { get; set; }
-        public string Message { get; set; }
-    }
+    
 }

@@ -17,7 +17,7 @@ public static class EventPublisherMock
 
         var eventPublisherMock = new Mock<IEventPublisher>();
         eventPublisherMock.Setup(x => x.PublishDonorDeletedEventAsync(It.IsAny<Guid>(), CancellationToken.None));
-        eventPublisherMock.Setup(x => x.PublishDonorCreatedEventAsync(It.IsAny<Guid>(), CancellationToken.None));
+        eventPublisherMock.Setup(x => x.PublishDonorCreatedEventAsync(It.IsAny<Guid>(), "test", CancellationToken.None));
         return eventPublisherMock;
     }
 }

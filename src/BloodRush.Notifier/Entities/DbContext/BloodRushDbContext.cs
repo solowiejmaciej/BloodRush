@@ -13,4 +13,5 @@ public class BloodRushNotificationsDbContext : Microsoft.EntityFrameworkCore.DbC
     }
 
     public DbSet<DonorNotificationInfo> DonorsNotificationInfo { get; set; }
+    public DbSet<NotificationContent> NotificationsContent { get; set; }
 }

@@ -28,17 +28,9 @@ public class SendNotificationConsumer : IConsumer<SendNotificationEvent>
     public async Task Consume(ConsumeContext<SendNotificationEvent> context)
     {
         var notificationEvent = context.Message;
-        var notification = await _notificationBuilder.BuildAsync(notificationEvent);
-        switch (notification.NotificationChannel)
-        {
-            case ENotificationChannel.Sms:
-                await _sender.SendSmsAsync(notification);
-                break;
-            case ENotificationChannel.Push:
-                await _sender.SendPushAsync(notification);
-                break;
-            default:
-                throw new InvalidNotificationChannelException();
-        }
+        //TODO Check if collection facility exists
+        var notification = await _notificationBuilder.BuildAsync(notificationEvent.DonorId, notificationEvent.PhoneNumber ,notificationEvent.CollectionFacilityId, notificationEvent.NotificationType);
+
+        await _sender.SendAsync(notification);
     }
 }
