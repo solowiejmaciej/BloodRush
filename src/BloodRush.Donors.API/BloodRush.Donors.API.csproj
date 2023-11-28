@@ -31,7 +31,12 @@
 
         <ProjectReference Include="..\BloodRush.Contracts\BloodRush.Contracts.csproj"/>
 
+
+
+
+
     </ItemGroup>
+
 
 
 

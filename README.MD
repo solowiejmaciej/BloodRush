@@ -11,6 +11,11 @@ Resting period will be calculated based on your sex.
 While resting you will not receive notifications about blood needs.
 You will be notified when you can donate blood again.
 
+## System architecture
+
+![System architecture](https://raw.githubusercontent.com/solowiejmaciej/BloodRush/master/BloodRush.drawio.png)
+
+
 ## Information
 
 Application is still in development.

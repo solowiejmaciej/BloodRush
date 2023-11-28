@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BloodRush.API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/donors")]
 public class DonorsController : ControllerBase
 {
     private readonly IMediator _mediator;

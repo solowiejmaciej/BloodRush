@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BloodRush.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/tokens")]
 public class TokenController : ControllerBase
 {
     private readonly ILogger<DonorsController> _logger;
@@ -23,7 +23,7 @@ public class TokenController : ControllerBase
         _mediator = mediator;
     }
 
-    [HttpPost("Donor/PhoneNumber")]
+    [HttpPost("donor/generate-via-phone-number")]
     public async Task<IActionResult> GenerateDonorToken(
         [FromBody] LoginWithPhoneNumberCommand command
     )
@@ -32,7 +32,7 @@ public class TokenController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("Donor/Email")]
+    [HttpPost("donor/generate-via-email")]
     public async Task<IActionResult> GenerateDonorToken(
         [FromBody] LoginWithEmailCommand command
     )
@@ -41,7 +41,7 @@ public class TokenController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPost("Donor/Refresh")]
+    [HttpPost("donor/refresh")]
     public async Task<IActionResult> RefreshDonorToken(
         [FromBody] RefreshTokenCommand command
     )
