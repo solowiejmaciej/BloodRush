@@ -33,7 +33,7 @@ public class NotificationsController : ControllerBase
         return Ok(notifications);
     }
     
-    [HttpPut("push-token")]
+    [HttpPatch("push-token")]
     public async Task<IActionResult> UpdatePushToken(
         [FromBody] UpdatePushTokenCommand command
     )
@@ -42,7 +42,7 @@ public class NotificationsController : ControllerBase
         return Ok();
     }
     
-    [HttpPut("notifications-channel")]
+    [HttpPatch("notifications-channel")]
     public async Task<IActionResult> UpdateNotificationsChannel(
         [FromBody] UpdateNotificationsChannelCommand command
     )

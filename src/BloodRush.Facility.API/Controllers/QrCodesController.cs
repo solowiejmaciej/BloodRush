@@ -21,7 +21,7 @@ public class QrCodesController : ControllerBase
 
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [HttpGet]
+    [HttpPost("verify")]
     public async Task<ActionResult<DonorDto?>> Get(
         [FromBody] string qrCode
         )
