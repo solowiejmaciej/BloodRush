@@ -1,6 +1,7 @@
 #region
 
 using BloodRush.API.Interfaces;
+using BloodRush.API.Interfaces.Repositories;
 using FluentValidation;
 using MediatR;
 

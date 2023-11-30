@@ -4,6 +4,7 @@ using BloodRush.API.Entities;
 using BloodRush.API.Entities.Enums;
 using BloodRush.API.Exceptions;
 using BloodRush.API.Interfaces;
+using BloodRush.API.Interfaces.Repositories;
 using Moq;
 
 #endregion

@@ -3,6 +3,7 @@
 using AutoMapper;
 using BloodRush.API.Dtos;
 using BloodRush.API.Interfaces;
+using BloodRush.API.Interfaces.Repositories;
 using MediatR;
 
 #endregion

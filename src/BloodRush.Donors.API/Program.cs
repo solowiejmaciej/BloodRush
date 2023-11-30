@@ -2,6 +2,7 @@
 
 using BloodRush.API.Extensions;
 using BloodRush.API.Interfaces;
+using BloodRush.API.Interfaces.Repositories;
 using BloodRush.API.Middleware;
 using BloodRush.API.Repositories;
 

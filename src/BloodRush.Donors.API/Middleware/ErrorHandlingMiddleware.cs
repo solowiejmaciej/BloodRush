@@ -5,6 +5,7 @@
 #region
 
 using BloodRush.API.Exceptions;
+using FluentValidation;
 
 #endregion
 
@@ -35,6 +36,11 @@ public class ErrorHandlingMiddleware : IMiddleware
         {
             context.Response.StatusCode = 400;
             await context.Response.WriteAsync(restingException.Message);
+        }
+        catch (ValidationException validationException)
+        {
+            context.Response.StatusCode = 400;
+            await context.Response.WriteAsync(validationException.Message);
         }
         catch (UnauthorizedAccessException unauthorizedAccess)
         {

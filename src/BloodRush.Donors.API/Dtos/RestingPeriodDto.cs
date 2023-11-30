@@ -1,9 +1,7 @@
+namespace BloodRush.API.Dtos;
 
-namespace BloodRush.DonationFacility.API.Entities;
-
-public class DonorRestingPeriodInfo
+public class RestingPeriodDto
 {
-    public Guid Id { get; set; }
     public Guid DonorId { get; set; }
     public DateTime? LastDonationDate { get; set; } = null;
     public bool IsRestingPeriodActive { get; set; }

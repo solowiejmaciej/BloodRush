@@ -2,6 +2,7 @@
 
 using BloodRush.API.Entities.Enums;
 using BloodRush.API.Interfaces;
+using BloodRush.API.Interfaces.Repositories;
 using BloodRush.Contracts.Enums;
 using BloodRush.Contracts.Events;
 using MassTransit;

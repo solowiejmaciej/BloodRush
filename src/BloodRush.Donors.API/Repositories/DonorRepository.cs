@@ -6,6 +6,7 @@ using BloodRush.API.Entities.DbContext;
 using BloodRush.API.Entities.Enums;
 using BloodRush.API.Exceptions;
 using BloodRush.API.Interfaces;
+using BloodRush.API.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 #endregion

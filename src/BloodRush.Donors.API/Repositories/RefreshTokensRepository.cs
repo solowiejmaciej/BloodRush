@@ -3,6 +3,7 @@
 using BloodRush.API.Entities;
 using BloodRush.API.Entities.DbContext;
 using BloodRush.API.Interfaces;
+using BloodRush.API.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 #endregion

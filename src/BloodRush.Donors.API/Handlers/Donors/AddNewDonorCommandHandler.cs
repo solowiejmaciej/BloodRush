@@ -4,6 +4,7 @@ using AutoMapper;
 using BloodRush.API.Entities;
 using BloodRush.API.Entities.Enums;
 using BloodRush.API.Interfaces;
+using BloodRush.API.Interfaces.Repositories;
 using FluentValidation;
 using MediatR;
 

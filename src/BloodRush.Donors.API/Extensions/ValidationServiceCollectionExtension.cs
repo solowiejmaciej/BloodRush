@@ -2,6 +2,7 @@
 
 using BloodRush.API.Handlers.Auth;
 using BloodRush.API.Handlers.Donors;
+using BloodRush.API.Handlers.RestingPeriod;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 
@@ -21,5 +22,7 @@ public static class ValidationServiceCollectionExtension
 
         services.AddScoped<IValidator<AddNewDonorCommand>, AddNewDonorCommandValidator>();
         services.AddScoped<IValidator<DeleteDonorCommand>, DeleteDonorCommandValidator>();
+        
+        services.AddScoped<IValidator<UpdateRestingPeriodMonthsCommand>, UpdateRestingPeriodMonthsCommandValidator>();
     }
 }

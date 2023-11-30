@@ -1,13 +1,17 @@
 #region
 
+using BloodRush.API.Dtos;
 using BloodRush.API.Handlers.RestingPeriod;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 #endregion
 
 namespace BloodRush.API.Controllers;
 
+[Authorize]
+[ApiController]
 [Route("api/resting-periods")]
 public class RestingPeriodController : ControllerBase
 {
@@ -24,7 +28,11 @@ public class RestingPeriodController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetRestingPeriod(
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+
+    public async Task<ActionResult<RestingPeriodDto>> GetRestingPeriod(
     )
     {
         var query = new GetRestingPeriodQuery();
@@ -33,11 +41,14 @@ public class RestingPeriodController : ControllerBase
     }
     
     [HttpPut]
-    public async Task<IActionResult> UpdateRestingPeriod(
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UpdateRestingPeriodMonths(
+        [FromBody] UpdateRestingPeriodMonthsCommand command
     )
     {
-        var query = new UpdateRestingPeriodQuery(); 
-        await _mediator.Send(query);
+        await _mediator.Send(command);
         return NoContent();
     }
     

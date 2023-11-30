@@ -1,11 +1,10 @@
 #region
 
-using System.Linq.Expressions;
 using BloodRush.API.Entities;
 
 #endregion
 
-namespace BloodRush.API.Interfaces;
+namespace BloodRush.API.Interfaces.Repositories;
 
 public interface IDonorRepository
 {

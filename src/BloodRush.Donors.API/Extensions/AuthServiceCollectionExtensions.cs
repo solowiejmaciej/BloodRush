@@ -3,6 +3,7 @@
 using System.Security.Cryptography;
 using BloodRush.API.Entities;
 using BloodRush.API.Interfaces;
+using BloodRush.API.Interfaces.Repositories;
 using BloodRush.API.Models.AppSettings;
 using BloodRush.API.Repositories;
 using BloodRush.API.Services;

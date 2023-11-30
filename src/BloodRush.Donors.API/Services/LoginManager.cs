@@ -2,6 +2,7 @@
 
 using BloodRush.API.Entities;
 using BloodRush.API.Interfaces;
+using BloodRush.API.Interfaces.Repositories;
 using BloodRush.API.Models.Responses;
 using Microsoft.AspNetCore.Identity;
 
