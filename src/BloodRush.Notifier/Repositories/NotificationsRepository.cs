@@ -45,21 +45,6 @@ public class NotificationsRepository : INotificationsRepository
         return notificationInfo;
     }
 
-    public async Task UpdatePushNotificationTokenAsync(Guid id, string token)
-    {
-        var notificationInfo = await GetNotificationInfoByDonorIdAsync(id);
-        notificationInfo.PushNotificationToken = token;
-        await _context.SaveChangesAsync();
-    }
-
-    public async Task ChangeDonorNotificationChannel(Guid id, ENotificationChannel channel)
-    {
-        var notificationInfo = await GetNotificationInfoByDonorIdAsync(id);
-
-        notificationInfo.NotificationChannel = channel;
-        await _context.SaveChangesAsync();
-    }
-
     public async Task DeleteNotificationInfoAsync(Guid donorId)
     {
         var notificationInfo = await GetNotificationInfoByDonorIdAsync(donorId);
@@ -75,6 +60,12 @@ public class NotificationsRepository : INotificationsRepository
             return CreateDefaultNotificationContent(collectionFacilityId, notificationType);
         }
         return result;
+    }
+
+    public Task AddNotificationAsync(Notification notification)
+    {
+        _context.Notifications.Add(notification);
+        return _context.SaveChangesAsync();
     }
 
     private NotificationContent CreateDefaultNotificationContent(int collectionFacilityId, ENotificationType notificationType)

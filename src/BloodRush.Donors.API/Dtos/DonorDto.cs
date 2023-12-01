@@ -8,7 +8,6 @@ namespace BloodRush.API.Dtos;
 
 public class DonorDto
 {
-    public Guid Id { get; set; }
     public required string FirstName { get; set; }
     public required string Surname { get; set; }
     public required ESex Sex { get; set; }

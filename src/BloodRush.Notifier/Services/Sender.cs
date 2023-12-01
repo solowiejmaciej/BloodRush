@@ -16,14 +16,17 @@ public class Sender : ISender
 {
     private readonly ILogger<Sender> _logger;
     private readonly IOptions<SmsApiSettings> _config;
-    
+    private readonly INotificationsRepository _notificationsRepository;
+
     public Sender(
         ILogger<Sender> logger, 
-        IOptions<SmsApiSettings> config
+        IOptions<SmsApiSettings> config,
+        INotificationsRepository notificationsRepository
 
     )
     {
         _config = config;
+        _notificationsRepository = notificationsRepository;
         _logger = logger;
     }
     
@@ -56,7 +59,7 @@ public class Sender : ISender
         request.AddParameter("key", _config.Value.Key);
         request.AddParameter("password", _config.Value.Password);
         request.AddParameter("from", _config.Value.SenderName);
-        request.AddParameter("to", notification.PhoneNumber.ToString());
+        request.AddParameter("to", notification.PhoneNumber);
         request.AddParameter("msg", notification.Message);
         
         var response = await client.ExecuteAsync<ErrorResponse>(request);
@@ -68,11 +71,13 @@ public class Sender : ISender
             _logger.LogError($"Error sending sms: {data.errorMsg}");
         }
         _logger.LogInformation("Sms sent successfully");
+        await _notificationsRepository.AddNotificationAsync(notification);
     }
 
     private async Task SendPushAsync(Notification notification)
     {
         _logger.LogInformation("Sending Push");
+        await _notificationsRepository.AddNotificationAsync(notification);
     }
     
     private class ErrorResponse

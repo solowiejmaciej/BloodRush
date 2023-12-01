@@ -4,12 +4,15 @@ using BloodRush.API.Dtos;
 using BloodRush.API.Handlers.Auth;
 using BloodRush.API.Handlers.Donations;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 #endregion
 
 namespace BloodRush.API.Controllers;
 
+[ApiController]
+[Authorize]
 [Route("api/donations")]
 public class DonationsController : ControllerBase
 {
@@ -26,6 +29,8 @@ public class DonationsController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<DonationDto>>> GetDonations()
     {
         var query = new GetDonationsQuery();

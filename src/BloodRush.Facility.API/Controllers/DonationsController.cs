@@ -1,3 +1,4 @@
+using BloodRush.DonationFacility.API.Dtos;
 using BloodRush.DonationFacility.API.Handlers.Donations;
 using BloodRush.DonationFacility.API.Models.Requests;
 using MediatR;
@@ -43,7 +44,7 @@ public class DonationsController : ControllerBase
     [Route("{donationId:int}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Get(
+    public async Task<ActionResult<DonationDto>> Get(
         [FromRoute] int donationId,
         [FromRoute] Guid donorId
     )

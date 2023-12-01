@@ -21,6 +21,7 @@ public static class GeneralServiceCollectionExtension
         services.AddTransient<IDbConnection>((sp) => new SqlConnection(connectionString));
 
         services.AddScoped<IRestingPeriodRepository, RestingPeriodRepository>();
+        services.AddScoped<IDonationRepository, DonationRepository>();
         
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

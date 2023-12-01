@@ -42,6 +42,9 @@ public class TokenController : ControllerBase
     }
 
     [HttpPost("donor/refresh")]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    
     public async Task<IActionResult> RefreshDonorToken(
         [FromBody] RefreshTokenCommand command
     )
