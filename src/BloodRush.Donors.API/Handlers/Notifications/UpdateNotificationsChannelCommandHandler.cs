@@ -1,6 +1,7 @@
 using BloodRush.API.Entities.Enums;
 using BloodRush.API.Interfaces;
 using BloodRush.API.Interfaces.Repositories;
+using FluentValidation;
 using MediatR;
 
 namespace BloodRush.API.Handlers.Notifications;
@@ -28,4 +29,12 @@ public class UpdateNotificationsChannelCommandHandler : IRequestHandler<UpdateNo
 public record UpdateNotificationsChannelCommand : IRequest
 {
     public ENotificationChannel Channel { get; set; }
+}
+
+public class UpdateNotificationsChannelCommandValidator : AbstractValidator<UpdateNotificationsChannelCommand>
+{
+    public UpdateNotificationsChannelCommandValidator()
+    {
+        RuleFor(x => x.Channel).IsInEnum();
+    }
 }

@@ -2,6 +2,7 @@ using System.Text;
 
 namespace BloodRush.Contracts.QrCodes;
 
+//Todo: This needs to be refactored to use a proper encryption algorithm
 public class QrCode
 {
     private string QrCodeString { get; set; }
@@ -10,7 +11,7 @@ public class QrCode
     public QrCode(Guid donorId)
     {
         DonorId = donorId;
-        QrCodeString = Encrypt($"{donorId};{CreatedAt}");
+        QrCodeString = Encrypt($"{donorId};{CreatedAt};");
     }
     
     public static QrCode? ReadQrCode(string qrCodeString)

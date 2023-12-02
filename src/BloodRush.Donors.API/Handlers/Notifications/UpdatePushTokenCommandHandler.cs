@@ -1,5 +1,6 @@
 using BloodRush.API.Interfaces;
 using BloodRush.API.Interfaces.Repositories;
+using FluentValidation;
 using MediatR;
 
 namespace BloodRush.API.Handlers.Notifications;
@@ -27,4 +28,12 @@ public class UpdatePushTokenCommandHandler : IRequestHandler<UpdatePushTokenComm
 public record UpdatePushTokenCommand : IRequest
 {
     public required string PushToken { get; set;}
+}
+
+public class UpdatePushTokenCommandValidator : AbstractValidator<UpdatePushTokenCommand>
+{
+    public UpdatePushTokenCommandValidator()
+    {
+        RuleFor(x => x.PushToken).NotEmpty();
+    }
 }

@@ -4,12 +4,14 @@ using BloodRush.API.Dtos;
 using BloodRush.API.Handlers.Auth;
 using BloodRush.API.Handlers.Notifications;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 #endregion
 
 namespace BloodRush.API.Controllers;
-
+[ApiController]
+[Authorize]
 [Route("api/notifications")]
 public class NotificationsController : ControllerBase
 {
@@ -26,6 +28,8 @@ public class NotificationsController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<ActionResult<List<NotificationDto>>> GetNotifications()
     {
         var query = new GetNotificationsQuery();
@@ -34,6 +38,8 @@ public class NotificationsController : ControllerBase
     }
     
     [HttpPatch("push-token")]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> UpdatePushToken(
         [FromBody] UpdatePushTokenCommand command
     )
@@ -43,6 +49,8 @@ public class NotificationsController : ControllerBase
     }
     
     [HttpPatch("notifications-channel")]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> UpdateNotificationsChannel(
         [FromBody] UpdateNotificationsChannelCommand command
     )
