@@ -2,6 +2,7 @@ using System.Data;
 using BloodRush.API.Dtos;
 using BloodRush.API.Entities.Enums;
 using BloodRush.API.Interfaces.Repositories;
+using BloodRush.Contracts.Enums;
 using Dapper;
 
 namespace BloodRush.API.Repositories;

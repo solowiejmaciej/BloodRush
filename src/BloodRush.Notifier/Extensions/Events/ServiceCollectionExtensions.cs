@@ -20,8 +20,8 @@ public static class ServiceCollectionExtensions
         services.AddMassTransit(mt => mt.AddMassTransit(x =>
         {
             x.AddConsumer<DonorCreatedConsumer>(); // Register the consumer
-            x.AddConsumer<SendNotificationConsumer>(); // Register the consumer
             x.AddConsumer<DonorDeletedConsumer>(); // Register the consumer
+            x.AddConsumer<SendNotificationConsumer>(); // Register the consumer
             x.AddBus(context => Bus.Factory.CreateUsingRabbitMq(cfg =>
             {
                 cfg.Host(rabbitConfig.Url, "/", c =>

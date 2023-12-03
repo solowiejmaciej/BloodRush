@@ -3,6 +3,7 @@
 using BloodRush.Contracts.Enums;
 using BloodRush.Contracts.Events;
 using BloodRush.DonationFacility.API.Interfaces;
+using BloodRush.DonationFacility.API.Models.Notifications;
 using MassTransit;
 
 #endregion
@@ -13,15 +14,13 @@ public class EventPublisher : IEventPublisher
 {
     private readonly IPublishEndpoint _publishEndpoint;
     private readonly ILogger<EventPublisher> _logger;
-    private readonly IDonorRepository _donorRepository;
 
     public EventPublisher(
         IPublishEndpoint publishEndpoint,
-        ILogger<EventPublisher> logger, IDonorRepository donorRepository)
+        ILogger<EventPublisher> logger)
     {
         _publishEndpoint = publishEndpoint;
         _logger = logger;
-        _donorRepository = donorRepository;
     }
     
 
@@ -29,13 +28,24 @@ public class EventPublisher : IEventPublisher
         int collectionFacilityId,
         CancellationToken cancellationToken = default)
     {
-        var donor = await _donorRepository.GetDonorByIdAsync(donorId);
         await _publishEndpoint.Publish(new SendNotificationEvent
         {
             DonorId = donorId,
             CollectionFacilityId = collectionFacilityId,
             NotificationType = notificationType,
-            PhoneNumber = donor.PhoneNumber
+        }, cancellationToken);
+    }
+
+    public async Task PublishSendNotificationEventAsync(Guid donorId, int donationFacilityId, NotificationContent content,
+        CancellationToken cancellationToken = default)
+    {
+        await _publishEndpoint.Publish(new SendNotificationEvent
+        {
+            DonorId = donorId,
+            CollectionFacilityId = donationFacilityId,
+            NotificationType = ENotificationType.Custom,
+            Title = content.Title,
+            Message = content.Message
         }, cancellationToken);
     }
 

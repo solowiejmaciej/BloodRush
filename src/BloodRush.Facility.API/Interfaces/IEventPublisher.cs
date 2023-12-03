@@ -5,6 +5,7 @@
 #region
 
 using BloodRush.Contracts.Enums;
+using BloodRush.DonationFacility.API.Models.Notifications;
 
 #endregion
 
@@ -14,6 +15,9 @@ public interface IEventPublisher
 {
     Task PublishSendNotificationEventAsync(Guid donorId, ENotificationType notificationType, int donationFacilityId,
         CancellationToken cancellationToken = default);
+    
+    Task PublishSendNotificationEventAsync(Guid donorId, int donationFacilityId, NotificationContent content ,CancellationToken cancellationToken = default);
+
 
     Task PublishBloodNeedCreatedEventAsync(int collectionFacilityId, bool isUrgent ,CancellationToken cancellationToken = default);
 }

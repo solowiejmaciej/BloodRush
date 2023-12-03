@@ -35,7 +35,7 @@ public class DonorCreatedConsumer : IConsumer<DonorCreatedEvent>
         var donorCreatedEvent = context.Message;
         _logger.LogInformation($"User created: {donorCreatedEvent.DonorId}");
         await _notificationsRepository.AddDefaultNotificationInfoAsync(donorCreatedEvent.DonorId);
-        var notification = await _notificationBuilder.BuildAsync(donorCreatedEvent.DonorId, donorCreatedEvent.PhoneNumber, -1, ENotificationType.Welcome);
+        var notification = await _notificationBuilder.BuildAsync(donorCreatedEvent.DonorId, -1, ENotificationType.Welcome);
         await _sender.SendAsync(notification);
     }
 }

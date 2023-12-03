@@ -10,6 +10,6 @@ namespace BloodRush.Notifier.Interfaces;
 
 public interface INotificationBuilder
 {
-    Task<Notification> BuildAsync(Guid donorId, string phoneNumber, int collectionFacilityId,
-        ENotificationType notificationType);
+    Task<Notification> BuildAsync(Guid donorId, int collectionFacilityId, ENotificationType notificationType);
+    Task<Notification> BuildCustomAsync(Guid donorId, int collectionFacilityId, string title, string message);
 }

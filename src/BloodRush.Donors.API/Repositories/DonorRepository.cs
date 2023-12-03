@@ -57,8 +57,9 @@ public class DonorRepository : IDonorRepository
         return true;
     }
 
-    public Task AddDefaultRestingPeriodInfoAsync(Guid donorId)
+    public async Task<Donor?> GetDonorByEmailAsync(string email)
     {
-        throw new NotImplementedException();
+        var donor = await _context.Donors.SingleOrDefaultAsync(d => d.Email == email);
+        return donor;
     }
 }

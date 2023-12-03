@@ -2,6 +2,7 @@
 
 using BloodRush.DonationFacility.API.Dtos;
 using BloodRush.DonationFacility.API.Handlers.Notifications;
+using BloodRush.DonationFacility.API.Models.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BloodRush.DonationFacility.API.Controllers;
 
 [ApiController]
-[Route("api/donor/{donorId:int}/notifications")]
+[Route("api/donor/{donorId:Guid}/notifications")]
 public class NotificationsController : ControllerBase
 {
     private readonly ILogger<DonorsController> _logger;
@@ -27,17 +28,28 @@ public class NotificationsController : ControllerBase
     
     [HttpPost]
     public async Task<ActionResult> Add(
-        [FromBody] AddNotificationCommand command
+        [FromBody] AddNotificationRequest request,
+        [FromRoute] Guid donorId
         )
-    { 
+    {
+        var command = new AddNotificationCommand()
+        {
+            DonorId = donorId,
+            Content = request.Content
+        };
         await _mediator.Send(command);
         return Ok();
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<NotificationDto>>> GetNotifications()
+    public async Task<ActionResult<List<NotificationDto>>> GetNotifications(
+        [FromRoute] Guid donorId
+        )
     {
-        var query = new GetNotificationsQuery();
+        var query = new GetNotificationsQuery()
+        {
+            DonorId = donorId
+        };
         var notifications = await _mediator.Send(query);
         return Ok(notifications);
     }

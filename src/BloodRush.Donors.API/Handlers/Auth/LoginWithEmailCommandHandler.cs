@@ -1,5 +1,6 @@
 #region
 
+using BloodRush.API.Interfaces;
 using BloodRush.API.Models.Responses;
 using FluentValidation;
 using MediatR;
@@ -10,9 +11,15 @@ namespace BloodRush.API.Handlers.Auth;
 
 public class LoginWithEmailCommandHandler : IRequestHandler<LoginWithEmailCommand, LoginResult>
 {
-    public Task<LoginResult> Handle(LoginWithEmailCommand request, CancellationToken cancellationToken)
+    private readonly ILoginManager _loginManager;
+
+    public LoginWithEmailCommandHandler(ILoginManager loginManager)
     {
-        throw new NotImplementedException();
+        _loginManager = loginManager;
+    }
+    public async Task<LoginResult> Handle(LoginWithEmailCommand request, CancellationToken cancellationToken)
+    {
+        return await _loginManager.LoginEmailAsync(request.Email, request.Password);
     }
 }
 

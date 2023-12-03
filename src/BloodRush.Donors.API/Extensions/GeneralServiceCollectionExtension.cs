@@ -22,6 +22,7 @@ public static class GeneralServiceCollectionExtension
 
         services.AddScoped<IRestingPeriodRepository, RestingPeriodRepository>();
         services.AddScoped<IDonationRepository, DonationRepository>();
+        services.AddScoped<INotificationsRepository, NotificationsRepository>();
         
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

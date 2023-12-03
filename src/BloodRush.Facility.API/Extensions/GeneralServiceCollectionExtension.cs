@@ -6,6 +6,7 @@ using System.Reflection;
 using BloodRush.DonationFacility.API.Entities.DbContext;
 using BloodRush.DonationFacility.API.Interfaces;
 using BloodRush.DonationFacility.API.Repositories;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 #endregion
@@ -22,6 +23,7 @@ public static class GeneralServiceCollectionExtension
         services.AddTransient<IDbConnection>((sp) => new SqlConnection(connectionString));
         services.AddScoped<IDonorInfoRepository, DonorInfoRepository>();
         services.AddScoped<IDonorRepository, DonorRepository>();
+        services.AddScoped<INotificationsRepository, NotificationsRepository>();
         
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         services.AddDbContext<BloodRushFacilityDbContext>(options =>

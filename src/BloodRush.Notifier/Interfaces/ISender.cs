@@ -1,5 +1,6 @@
 #region
 
+using BloodRush.Contracts.Events;
 using BloodRush.Notifier.Entities;
 
 #endregion

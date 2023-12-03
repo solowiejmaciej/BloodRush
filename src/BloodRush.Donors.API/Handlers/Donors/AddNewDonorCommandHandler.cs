@@ -37,7 +37,7 @@ public class AddNewDonorCommandHandler : IRequestHandler<AddNewDonorCommand, Gui
         var donor = _mapper.Map<Donor>(request);
         var donorWithHashedPassword = _loginManager.HashPassword(donor, donor.Password);
         var id = await _donorRepository.AddDonorAsync(donorWithHashedPassword);
-        await _eventPublisher.PublishDonorCreatedEventAsync(id, donor.PhoneNumber, cancellationToken);
+        await _eventPublisher.PublishDonorCreatedEventAsync(id, cancellationToken);
         return id;
     }
 }

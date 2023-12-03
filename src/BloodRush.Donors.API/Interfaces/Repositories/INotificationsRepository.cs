@@ -1,5 +1,5 @@
 using BloodRush.API.Dtos;
-using BloodRush.API.Entities.Enums;
+using BloodRush.Contracts.Enums;
 
 namespace BloodRush.API.Interfaces.Repositories;
 

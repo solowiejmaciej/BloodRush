@@ -67,9 +67,37 @@ public class LoginManager : ILoginManager
         };
     }
 
-    public Task<LoginResult> LoginEmailAsync(string email, string hashedPassword)
+    public async Task<LoginResult> LoginEmailAsync(string email, string hashedPassword)
     {
-        throw new NotImplementedException();
+        var donor = await _donorRepository.GetDonorByEmailAsync(email);
+        if (donor is null)
+        {
+            AddError("Invalid credentials");
+            return FailResult();
+        }
+        
+        var result = _passwordHasher.VerifyHashedPassword(donor, donor.Password, hashedPassword);
+        if (result != PasswordVerificationResult.Success)
+        {
+            AddError("Invalid credentials");
+            return FailResult();
+        }
+        
+        if (donor.IsEmailConfirmed == false)
+        {
+            AddError("Email is not confirmed.");
+            return FailResult();
+        }
+        
+        var tokenInfo = await _tokenManager.GenerateJwtTokenAsync(donor.Id);
+        
+        _logger.LogInformation($"Donor with username {email} logged in.");
+        
+        return new LoginResult
+        {
+            IsSuccess = true,
+            TokenInfo = tokenInfo
+        };
     }
 
     public async Task<LoginResult> RefreshTokenAsync(string jwtToken, string refreshToken)

@@ -1,6 +1,6 @@
-using BloodRush.API.Entities.Enums;
 using BloodRush.API.Interfaces;
 using BloodRush.API.Interfaces.Repositories;
+using BloodRush.Contracts.Enums;
 using FluentValidation;
 using MediatR;
 

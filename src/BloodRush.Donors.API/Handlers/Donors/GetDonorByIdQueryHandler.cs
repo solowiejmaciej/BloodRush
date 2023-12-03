@@ -2,6 +2,7 @@
 
 using AutoMapper;
 using BloodRush.API.Dtos;
+using BloodRush.API.Exceptions;
 using BloodRush.API.Interfaces;
 using BloodRush.API.Interfaces.Repositories;
 using FluentValidation;
@@ -15,19 +16,27 @@ public class GetDonorByIdQueryHandler : IRequestHandler<GetDonorByIdQuery, Donor
 {
     private readonly IDonorRepository _donorRepository;
     private readonly IMapper _mapper;
+    private readonly IUserContextAccessor _userContextAccessor;
 
     public GetDonorByIdQueryHandler(
         IDonorRepository donorRepository,
-        IMapper mapper
+        IMapper mapper,
+        IUserContextAccessor userContextAccessor
     )
     {
         _donorRepository = donorRepository;
         _mapper = mapper;
+        _userContextAccessor = userContextAccessor;
     }
 
     public async Task<DonorDto> Handle(GetDonorByIdQuery request, CancellationToken cancellationToken)
     {
         var donor = await _donorRepository.GetDonorByIdAsync(request.Id);
+        var currentUserId = _userContextAccessor.GetDonorId();
+        if (donor.Id != currentUserId )    
+        {
+            throw new DonorNotFoundException();
+        }
         var donorDto = _mapper.Map<DonorDto>(donor);
         return donorDto;
     }

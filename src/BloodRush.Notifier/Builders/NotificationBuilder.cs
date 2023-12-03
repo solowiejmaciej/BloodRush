@@ -1,6 +1,5 @@
 #region
 using BloodRush.Contracts.Enums;
-using BloodRush.Contracts.Events;
 using BloodRush.Notifier.Constants;
 using BloodRush.Notifier.Entities;
 using BloodRush.Notifier.Interfaces;
@@ -13,19 +12,23 @@ public class NotificationBuilder : INotificationBuilder
 {
     private readonly INotificationsRepository _notificationsRepository;
     private readonly ILogger<NotificationBuilder> _logger;
+    private readonly IDonorRepository _donorRepository;
 
     public NotificationBuilder(
         INotificationsRepository notificationsRepository,
-        ILogger<NotificationBuilder> logger
-    )
+        ILogger<NotificationBuilder> logger,
+        IDonorRepository donorRepository 
+        )
     {
         _notificationsRepository = notificationsRepository;
         _logger = logger;
+        _donorRepository = donorRepository;
     }
 
-    public async Task<Notification> BuildAsync(Guid donorId, string phoneNumber ,int collectionFacilityId, ENotificationType notificationType)
+    public async Task<Notification> BuildAsync(Guid donorId,int collectionFacilityId, ENotificationType notificationType)
     {
         var donorNotificationInfo = await _notificationsRepository.GetNotificationInfoByDonorIdAsync(donorId);
+        var phoneNumber = await _donorRepository.GetPhoneNumberAsync(donorId);
         
         var notificationContent = await BuildNotificationContentAsync(collectionFacilityId,
             notificationType);
@@ -39,8 +42,29 @@ public class NotificationBuilder : INotificationBuilder
             Message = notificationContent.Message,
             Title = notificationContent.Title
         };
+        
         return notification;
     }
+
+    public async Task<Notification> BuildCustomAsync(Guid donorId, int collectionFacilityId, string title, string message)
+    { 
+        var notificationInfo = await _notificationsRepository.GetNotificationInfoByDonorIdAsync(donorId);
+        var phoneNumber = await _donorRepository.GetPhoneNumberAsync(donorId);
+        
+        var notification = new Notification
+        {
+            DonorId = donorId,
+            CollectionFacilityId = collectionFacilityId,
+            NotificationChannel = notificationInfo.NotificationChannel,
+            PushNotificationToken = notificationInfo.PushNotificationToken,
+            PhoneNumber = phoneNumber,
+            Message = message,
+            Title = title
+        };
+        
+        return notification;
+    }
+
 
     private async Task<NotificationContent> BuildNotificationContentAsync(int collectionFacilityId,
         ENotificationType notificationType)

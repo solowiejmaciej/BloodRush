@@ -1,6 +1,7 @@
 #region
 
 using BloodRush.API.Entities.Enums;
+using BloodRush.Contracts.Events;
 using BloodRush.Notifier.Entities;
 using BloodRush.Notifier.Exceptions;
 using BloodRush.Notifier.Interfaces;
@@ -44,7 +45,7 @@ public class Sender : ISender
                 throw new InvalidNotificationChannelException();
         }
     }
-    
+
     private async Task SendSmsAsync(Notification notification)
     {
         var baseUrl = _config.Value.ApiUrl;

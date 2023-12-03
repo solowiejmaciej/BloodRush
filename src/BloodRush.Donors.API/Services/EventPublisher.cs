@@ -26,10 +26,10 @@ public class EventPublisher : IEventPublisher
         _donorRepository = donorRepository;
     }
 
-    public async Task PublishDonorCreatedEventAsync(Guid donorId, string donorPhoneNumber,
+    public async Task PublishDonorCreatedEventAsync(Guid donorId,
         CancellationToken cancellationToken = default)
     {
-        await _publishEndpoint.Publish(new DonorCreatedEvent(donorId, donorPhoneNumber), cancellationToken);
+        await _publishEndpoint.Publish(new DonorCreatedEvent(donorId), cancellationToken);
     }
 
 
