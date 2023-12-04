@@ -29,7 +29,7 @@ If you have any suggestions, please let me know.
 
 ## Features
 
-- Background jobs with Hangfire
+- Background jobs with Azure Functions
 - Jwt authentication with refresh tokens
 - Refresh Tokens
 - Push notifications
