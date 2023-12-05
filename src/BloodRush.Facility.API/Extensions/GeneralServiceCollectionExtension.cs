@@ -24,6 +24,7 @@ public static class GeneralServiceCollectionExtension
         services.AddScoped<IDonorInfoRepository, DonorInfoRepository>();
         services.AddScoped<IDonorRepository, DonorRepository>();
         services.AddScoped<INotificationsRepository, NotificationsRepository>();
+        services.AddScoped<IDonationFacilityRepository, DonationFacilityRepository>();
         
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         services.AddDbContext<BloodRushFacilityDbContext>(options =>

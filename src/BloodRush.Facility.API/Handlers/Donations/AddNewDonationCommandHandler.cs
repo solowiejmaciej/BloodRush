@@ -15,13 +15,15 @@ public class AddNewDonationCommandHandler : IRequestHandler<AddNewDonationComman
     private readonly IDonationRepository _donationRepository;
     private readonly IDonorInfoRepository _donorInfoRepository;
     private readonly IMediator _mediator;
+    private readonly IDonationFacilityRepository _donationFacilityRepository;
 
     public AddNewDonationCommandHandler(
         ILogger<AddNewDonationCommandHandler> logger,
         IMapper mapper,
         IDonationRepository donationRepository,
         IDonorInfoRepository donorInfoRepository,
-        IMediator mediator
+        IMediator mediator,
+        IDonationFacilityRepository donationFacilityRepository
         )
     {
         _logger = logger;
@@ -29,9 +31,13 @@ public class AddNewDonationCommandHandler : IRequestHandler<AddNewDonationComman
         _donationRepository = donationRepository;
         _donorInfoRepository = donorInfoRepository;
         _mediator = mediator;
+        _donationFacilityRepository = donationFacilityRepository;
     }
     public async Task Handle(AddNewDonationCommand request, CancellationToken cancellationToken)
     {
+        var donationFacility = await _donationFacilityRepository.GetDonationFacilityByIdAsync(request.DonationFacilityId);
+        if (donationFacility == null) throw new DonationFacilityNotFoundException();
+        
         var donorRestingPeriodInfo = await _donorInfoRepository.GetRestingPeriodInfoByDonorIdAsync(request.DonorId);
         if(donorRestingPeriodInfo.IsRestingPeriodActive) throw new DonorIsRestingException();
         

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BloodRush.DonationFacility.API.Controllers;
 
 [ApiController]
-[Route("api/tokens")]
+[Route("api/tokens/{donationFacilityId:int}")]
 public class TokensController : ControllerBase
 {
     private readonly ILogger<DonorsController> _logger;

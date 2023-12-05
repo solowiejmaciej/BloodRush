@@ -30,7 +30,12 @@ public class ErrorHandlingMiddleware : IMiddleware
         {
             context.Response.StatusCode = 404;
             await context.Response.WriteAsync(notFoundException.Message);
-        }        
+        }   
+        catch (DonationFacilityNotFoundException notFoundException)
+        {
+            context.Response.StatusCode = 404;
+            await context.Response.WriteAsync(notFoundException.Message);
+        }  
         catch (DonorIsRestingException restingException)
         {
             context.Response.StatusCode = 400;
