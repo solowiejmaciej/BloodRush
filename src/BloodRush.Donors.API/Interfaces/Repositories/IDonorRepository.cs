@@ -14,4 +14,8 @@ public interface IDonorRepository
     Task<Donor?> GetDonorByPhoneNumberAsync(string phoneNumber);
     Task<bool> DeleteDonorAsync(Guid requestId);
     Task<Donor?> GetDonorByEmailAsync(string email);
+    Task ConfirmEmailAsync(Guid donorId);
+    Task ConfirmPhoneNumberAsync(Guid donorId);
+    Task SaveChangesAsync();
+    Task UpdateDonorAsync(Donor donor);
 }

@@ -35,4 +35,8 @@
     </ItemGroup>
 
 
+    <ItemGroup>
+      <Folder Include="Entities\Enums\" />
+    </ItemGroup>
+
 </Project>

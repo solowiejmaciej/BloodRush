@@ -1,8 +1,7 @@
 namespace BloodRush.Contracts.Enums;
 
-public enum ENotificationChannel
+public enum ECodeType
 {
     Sms,
-    Push,
     Email
 }

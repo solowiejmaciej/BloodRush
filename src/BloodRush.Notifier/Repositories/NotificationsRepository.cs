@@ -1,14 +1,11 @@
 #region
 
-using BloodRush.API.Entities;
-using BloodRush.API.Entities.Enums;
 using BloodRush.Contracts.Enums;
 using BloodRush.Notifier.Constants;
 using BloodRush.Notifier.Entities;
 using BloodRush.Notifier.Entities.DbContext;
 using BloodRush.Notifier.Exceptions;
 using BloodRush.Notifier.Interfaces;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 #endregion

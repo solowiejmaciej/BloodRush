@@ -1,7 +1,6 @@
 #region
 
-using BloodRush.API.Entities.Enums;
-using BloodRush.Contracts.Events;
+using BloodRush.Contracts.Enums;
 using BloodRush.Notifier.Entities;
 using BloodRush.Notifier.Exceptions;
 using BloodRush.Notifier.Interfaces;
@@ -41,9 +40,17 @@ public class Sender : ISender
             case ENotificationChannel.Push:
                 await SendPushAsync(notification);
                 break;
+            case ENotificationChannel.Email:
+                await SendEmailAsync(notification);
+                break;
             default:
                 throw new InvalidNotificationChannelException();
         }
+    }
+
+    private async Task SendEmailAsync(Notification notification)
+    {
+        _logger.LogInformation("SendingEmails request");
     }
 
     private async Task SendSmsAsync(Notification notification)

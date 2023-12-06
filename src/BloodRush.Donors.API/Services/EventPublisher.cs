@@ -1,8 +1,10 @@
 ﻿#region
 
+using BloodRush.API.Entities;
 using BloodRush.API.Entities.Enums;
 using BloodRush.API.Interfaces;
 using BloodRush.API.Interfaces.Repositories;
+using BloodRush.Contracts.ConfirmationCodes;
 using BloodRush.Contracts.Enums;
 using BloodRush.Contracts.Events;
 using MassTransit;
@@ -38,13 +40,10 @@ public class EventPublisher : IEventPublisher
     {
         await _publishEndpoint.Publish(new DonorDeletedEvent(requestDonorId), cancellationToken);
     }
-    
 
-    public async Task PublishBloodNeedCreatedEventAsync(int collectionFacilityId, bool isUrgent,
+    public async Task PublishSendConfirmationCodeEventAsync(ConfirmationCode code, Guid currentUser,
         CancellationToken cancellationToken = default)
-    { 
-        var bloodNeedCreatedEvent = new BloodNeedCreatedEvent { CollectionFacilityId = collectionFacilityId, IsUrgent = isUrgent}; 
-        
-        await _publishEndpoint.Publish(bloodNeedCreatedEvent, cancellationToken);
+    {
+        await _publishEndpoint.Publish(new SendConfirmationCodeEvent(code, currentUser), cancellationToken);
     }
 }

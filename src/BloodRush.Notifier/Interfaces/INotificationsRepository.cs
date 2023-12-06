@@ -1,6 +1,5 @@
 #region
 
-using BloodRush.API.Entities.Enums;
 using BloodRush.Contracts.Enums;
 using BloodRush.Notifier.Entities;
 

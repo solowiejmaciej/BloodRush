@@ -22,6 +22,7 @@ public static class ServiceCollectionExtensions
             x.AddConsumer<DonorCreatedConsumer>(); // Register the consumer
             x.AddConsumer<DonorDeletedConsumer>(); // Register the consumer
             x.AddConsumer<SendNotificationConsumer>(); // Register the consumer
+            x.AddConsumer<SendConfirmationCodeConsumer>(); // Register the consumer
             x.AddBus(context => Bus.Factory.CreateUsingRabbitMq(cfg =>
             {
                 cfg.Host(rabbitConfig.Url, "/", c =>
@@ -35,6 +36,8 @@ public static class ServiceCollectionExtensions
                     endpoint => { endpoint.ConfigureConsumer<DonorDeletedConsumer>(context); });
                 cfg.ReceiveEndpoint(RabbitQueues.NotificationsQueue,
                     endpoint => { endpoint.ConfigureConsumer<SendNotificationConsumer>(context); });
+                cfg.ReceiveEndpoint(RabbitQueues.ConfirmationCodesQueue,
+                    endpoint => { endpoint.ConfigureConsumer<SendConfirmationCodeConsumer>(context); });
             }));
         }));
     }

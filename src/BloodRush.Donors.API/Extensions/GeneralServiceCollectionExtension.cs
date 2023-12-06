@@ -3,8 +3,10 @@
 using System.Data;
 using System.Reflection;
 using BloodRush.API.Entities.DbContext;
+using BloodRush.API.Interfaces;
 using BloodRush.API.Interfaces.Repositories;
 using BloodRush.API.Repositories;
+using BloodRush.API.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +25,7 @@ public static class GeneralServiceCollectionExtension
         services.AddScoped<IRestingPeriodRepository, RestingPeriodRepository>();
         services.AddScoped<IDonationRepository, DonationRepository>();
         services.AddScoped<INotificationsRepository, NotificationsRepository>();
+        services.AddScoped<IConfirmationCodesRepository, ConfirmationCodesRepository>();
         
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -30,5 +33,12 @@ public static class GeneralServiceCollectionExtension
         {
             options.UseSqlServer(connectionString);
         });
+        
+        services.AddStackExchangeRedisCache(redisOptions =>
+        {
+            redisOptions.Configuration = configuration.GetConnectionString("Redis");
+        });
+        
+        services.AddScoped<ICacheService, CacheService>();
     }
 }

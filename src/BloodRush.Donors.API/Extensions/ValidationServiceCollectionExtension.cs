@@ -1,5 +1,6 @@
 #region
 
+using BloodRush.API.Handlers.Account;
 using BloodRush.API.Handlers.Auth;
 using BloodRush.API.Handlers.Donors;
 using BloodRush.API.Handlers.Notifications;
@@ -26,6 +27,11 @@ public static class ValidationServiceCollectionExtension
         
         services.AddScoped<IValidator<UpdateRestingPeriodMonthsCommand>, UpdateRestingPeriodMonthsCommandValidator>();
         services.AddScoped<IValidator<UpdateNotificationsChannelCommand>, UpdateNotificationsChannelCommandValidator>();
+        
+        services.AddScoped<IValidator<ChangeEmailCommand>, ChangeEmailCommandValidator>();
+        services.AddScoped<IValidator<ChangePhoneNumberCommand>, ChangePhoneNumberCommandValidator>();
+        
+        services.AddScoped<IValidator<ChangePasswordCommand>, ChangePasswordCommandValidator>();
         
     }
 }

@@ -5,6 +5,7 @@
 #region
 
 using BloodRush.API.Exceptions;
+using BloodRush.API.Exceptions.ConfirmationCodes;
 using FluentValidation;
 
 #endregion
@@ -41,6 +42,26 @@ public class ErrorHandlingMiddleware : IMiddleware
         {
             context.Response.StatusCode = 400;
             await context.Response.WriteAsync(validationException.Message);
+        }        
+        catch (EmailAlreadyConfirmedException emailAlreadyConfirmedException)
+        {
+            context.Response.StatusCode = 400;
+            await context.Response.WriteAsync(emailAlreadyConfirmedException.Message);
+        }
+        catch (InvalidCodeException invalidCodeException)
+        {
+            context.Response.StatusCode = 400;
+            await context.Response.WriteAsync(invalidCodeException.Message);
+        }
+        catch (PhoneNumberAlreadyConfirmedException phoneNumberAlreadyConfirmedException)
+        {
+            context.Response.StatusCode = 400;
+            await context.Response.WriteAsync(phoneNumberAlreadyConfirmedException.Message);
+        }        
+        catch (EmailAlreadyExistsException numberAlreadyConfirmedException)
+        {
+            context.Response.StatusCode = 400;
+            await context.Response.WriteAsync(numberAlreadyConfirmedException.Message);
         }
         catch (UnauthorizedAccessException unauthorizedAccess)
         {

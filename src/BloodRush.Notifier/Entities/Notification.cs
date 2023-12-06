@@ -1,7 +1,7 @@
 #region
 
 using System.ComponentModel.DataAnnotations.Schema;
-using BloodRush.API.Entities.Enums;
+using BloodRush.Contracts.Enums;
 
 #endregion
 
@@ -20,4 +20,6 @@ public class Notification
     public string? PushNotificationToken { get; set; }
     [NotMapped]
     public string? PhoneNumber { get; set; }
+    [NotMapped]
+    public string? Email { get; set; } = null!;
 }

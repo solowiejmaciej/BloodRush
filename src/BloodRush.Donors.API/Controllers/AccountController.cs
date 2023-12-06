@@ -1,8 +1,13 @@
 #region
 
+using BloodRush.API.Entities;
+using BloodRush.API.Extensions;
+using BloodRush.API.Handlers.Account;
 using BloodRush.API.Handlers.Auth;
 using BloodRush.API.Handlers.QrCodes;
+using BloodRush.API.Interfaces;
 using BloodRush.API.Models.Responses;
+using BloodRush.Contracts.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,40 +35,60 @@ public class AccountController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [HttpPatch("change-password")]
-    public async Task<ActionResult> ChangePassword()
+    public async Task<ActionResult> ChangePassword(
+        [FromBody] ChangePasswordCommand command
+        )
     {
+        
+        await _mediator.Send(command);
         return Ok();
     }
     
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [HttpPatch("change-email")]
-    public async Task<ActionResult> ChangeEmail()
+    public async Task<ActionResult> ChangeEmail(
+        [FromBody] ChangeEmailCommand command
+        )
     {
+        await _mediator.Send(command);
         return Ok();
     }
     
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [HttpPatch("change-phone-number")]
-    public async Task<ActionResult> ChangePhoneNumber()
+    public async Task<ActionResult> ChangePhoneNumber(
+        [FromBody] ChangePhoneNumberCommand command
+        )
     {
+        await _mediator.Send(command);
         return Ok();
     }
     
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [HttpPost("send-email-confirmation-code")]
-    public async Task<ActionResult> ConfirmEmail()
+    public async Task<ActionResult> SendEmailConfirmation()
     {
+        var command = new SendConfirmationCommand
+        {
+            CodeType = ECodeType.Email
+        };
+        await _mediator.Send(command);
         return Ok();
     }
     
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [HttpPost("send-phone-number-confirmation-code")]
-    public async Task<ActionResult> ConfirmPhoneNumber()
+    public async Task<ActionResult> SendPhoneNumberConfirmation()
     {
+        var command = new SendConfirmationCommand
+        {
+            CodeType = ECodeType.Sms
+        };
+        await _mediator.Send(command);
         return Ok();
     }
     
@@ -73,6 +98,12 @@ public class AccountController : ControllerBase
     [HttpPost("confirm-email")]
     public async Task<ActionResult> ConfirmEmail([FromQuery] string code)
     {
+        var command = new ConfirmCodeCommand
+        {
+            CodeType = ECodeType.Email,
+            Code = code
+        };
+        await _mediator.Send(command);
         return Ok();
     }
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -81,6 +112,12 @@ public class AccountController : ControllerBase
     [HttpPost("confirm-phone-number")]
     public async Task<ActionResult> ConfirmPhoneNumber([FromQuery] string code)
     {
+        var command = new ConfirmCodeCommand
+        {
+            CodeType = ECodeType.Sms,
+            Code = code
+        };
+        await _mediator.Send(command);
         return Ok();
     }
     

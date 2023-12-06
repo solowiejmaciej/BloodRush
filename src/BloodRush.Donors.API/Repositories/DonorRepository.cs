@@ -62,4 +62,30 @@ public class DonorRepository : IDonorRepository
         var donor = await _context.Donors.SingleOrDefaultAsync(d => d.Email == email);
         return donor;
     }
+
+    public async Task ConfirmEmailAsync(Guid donorId)
+    {
+        var donor = await GetDonorByIdAsync(donorId);
+        donor.IsEmailConfirmed = true;
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task ConfirmPhoneNumberAsync(Guid donorId)
+    {
+        var donor = await GetDonorByIdAsync(donorId);
+        donor.IsPhoneNumberConfirmed = true;
+        await _context.SaveChangesAsync();
+        
+    }
+
+    public async Task SaveChangesAsync()
+    { 
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateDonorAsync(Donor donor)
+    {
+        _context.Donors.Update(donor);
+        await _context.SaveChangesAsync();
+    }
 }

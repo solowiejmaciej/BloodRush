@@ -49,11 +49,11 @@ public class LoginManager : ILoginManager
             return FailResult();
         }
 
-        if (donor.IsPhoneNumberConfirmed == false)
-        {
-            AddError("Phone number is not confirmed.");
-            return FailResult();
-        }
+        // if (donor.IsPhoneNumberConfirmed == false)
+        // {
+        //     AddError("Phone number is not confirmed.");
+        //     return FailResult();
+        // }
 
 
         var tokenInfo = await _tokenManager.GenerateJwtTokenAsync(donor.Id);
@@ -83,11 +83,11 @@ public class LoginManager : ILoginManager
             return FailResult();
         }
         
-        if (donor.IsEmailConfirmed == false)
-        {
-            AddError("Email is not confirmed.");
-            return FailResult();
-        }
+        // if (donor.IsEmailConfirmed == false)
+        // {
+        //     AddError("Email is not confirmed.");
+        //     return FailResult();
+        // }
         
         var tokenInfo = await _tokenManager.GenerateJwtTokenAsync(donor.Id);
         

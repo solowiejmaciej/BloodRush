@@ -38,4 +38,11 @@ public class RefreshTokensRepository : IRefreshTokensRepository
         await _dbContext.AddAsync(refreshToken, cancellationToken);
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task DeleteRefreshTokens(Guid donorId)
+    {
+        var refreshTokens = _dbContext.RefreshTokens.Where(t => t.DonorId == donorId);
+        _dbContext.RefreshTokens.RemoveRange(refreshTokens);
+        await _dbContext.SaveChangesAsync();
+    }
 }

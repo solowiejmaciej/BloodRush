@@ -15,13 +15,26 @@ public class DonorRepository : IDonorRepository
     public async Task<bool> ExistsAsync(Guid donorId)
     {
         var sql = "SELECT Id FROM Donors WHERE Id = @Id";
+        _dbConnection.Open();
         var query = await _dbConnection.QueryFirstOrDefaultAsync<Guid>(sql, new { Id = donorId });
+        _dbConnection.Close();
         return query != Guid.Empty;
     }
 
     public async Task<string?> GetPhoneNumberAsync(Guid donorId)
     {
         var sql = "SELECT PhoneNumber FROM Donors WHERE Id = @Id";
-        return await _dbConnection.QueryFirstOrDefaultAsync<string>(sql, new { Id = donorId });
+        _dbConnection.Open();
+        var res = await _dbConnection.QueryFirstOrDefaultAsync<string>(sql, new { Id = donorId });
+        _dbConnection.Close();
+        return res;
+    }
+
+    public async Task<string?> GetEmailAsync(Guid donorId)
+    {
+        var sql = "SELECT Email FROM Donors WHERE Id = @Id";
+        _dbConnection.Open();
+        var res = await _dbConnection.QueryFirstOrDefaultAsync<string>(sql, new { Id = donorId });
+        return res;
     }
 }

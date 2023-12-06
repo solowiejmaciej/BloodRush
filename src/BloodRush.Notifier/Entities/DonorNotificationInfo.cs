@@ -1,9 +1,5 @@
-#region
 
-using System.ComponentModel.DataAnnotations.Schema;
-using BloodRush.API.Entities.Enums;
-
-#endregion
+using BloodRush.Contracts.Enums;
 
 namespace BloodRush.Notifier.Entities;
 
