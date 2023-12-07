@@ -19,26 +19,24 @@ public static class GeneralServiceCollectionExtension
     public static void AddGeneralServiceCollection(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
-        
-        services.AddTransient<IDbConnection>((sp) => new SqlConnection(connectionString));
+
+        services.AddTransient<IDbConnection>(sp => new SqlConnection(connectionString));
 
         services.AddScoped<IRestingPeriodRepository, RestingPeriodRepository>();
         services.AddScoped<IDonationRepository, DonationRepository>();
         services.AddScoped<INotificationsRepository, NotificationsRepository>();
         services.AddScoped<IConfirmationCodesRepository, ConfirmationCodesRepository>();
-        
+        services.AddScoped<IProfilePictureRepository, ProfilePictureRepository>();
+
         services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-        services.AddDbContext<BloodRushDbContext>(options =>
-        {
-            options.UseSqlServer(connectionString);
-        });
-        
+        services.AddDbContext<BloodRushDbContext>(options => { options.UseSqlServer(connectionString); });
+
         services.AddStackExchangeRedisCache(redisOptions =>
         {
             redisOptions.Configuration = configuration.GetConnectionString("Redis");
         });
-        
+
         services.AddScoped<ICacheService, CacheService>();
     }
 }

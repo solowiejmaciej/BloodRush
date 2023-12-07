@@ -123,22 +123,35 @@ public class AccountController : ControllerBase
     
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpPost("upload-photo")]
-    public async Task<ActionResult> UploadPhoto()
+    public async Task<ActionResult> UploadPhoto(
+        [FromForm] UploadPhotoCommand command
+        )
     {
+        await _mediator.Send(command);
         return Ok();
     }
 
     
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [HttpDelete("delete-photo")]
     public async Task<ActionResult> DeletePhoto()
     {
+        var command = new DeletePhotoCommand();
+        await _mediator.Send(command);
         return Ok();
     }
+    
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [HttpGet("photo")]
+    public async Task<ActionResult> GetPhoto()
+    {
+        var command = new GetPhotoQuery();
+        return Ok(await _mediator.Send(command));
+    }
+
     
     
 }
