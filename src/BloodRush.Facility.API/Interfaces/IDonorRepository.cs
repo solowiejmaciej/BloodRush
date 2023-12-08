@@ -6,4 +6,5 @@ public interface IDonorRepository
 {
     Task<List<Donor>> GetAllDonorsAsync();
     Task<Donor> GetDonorByIdAsync(Guid id);
+    Task<Stream?> GetDonorPictureByDonorIdAsync(Guid donorId);
 }

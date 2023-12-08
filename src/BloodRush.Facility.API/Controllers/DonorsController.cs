@@ -33,7 +33,16 @@ public class DonorsController : ControllerBase
     [HttpGet("{id:Guid}")]
     public async Task<ActionResult<DonorDto>> Get([FromRoute] Guid id)
     {
-        var donorDto = await _mediator.Send(new GetDonorByIdQuery { Id = id });
+        var donorDto = await _mediator.Send(new GetDonorByIdQuery { DonorId = id });
+        return Ok(donorDto);
+    }
+    
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [HttpGet("{id:Guid}/picture")]
+    public async Task<ActionResult<DonorDto>> GetPicture([FromRoute] Guid id)
+    {
+        var donorDto = await _mediator.Send(new GetDonorPictureQuery { DonorId = id });
         return Ok(donorDto);
     }
 }

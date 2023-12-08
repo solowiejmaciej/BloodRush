@@ -26,7 +26,7 @@ public class GetDonorByIdQueryHandler : IRequestHandler<GetDonorByIdQuery, Donor
 
     public async Task<DonorDto> Handle(GetDonorByIdQuery request, CancellationToken cancellationToken)
     {
-        var donor = await _donorRepository.GetDonorByIdAsync(request.Id);
+        var donor = await _donorRepository.GetDonorByIdAsync(request.DonorId);
         var donorDto = _mapper.Map<DonorDto>(donor);
         return donorDto;
     }
@@ -34,14 +34,14 @@ public class GetDonorByIdQueryHandler : IRequestHandler<GetDonorByIdQuery, Donor
 
 public record GetDonorByIdQuery : IRequest<DonorDto>
 {
-    public Guid Id { get; set; }
+    public Guid DonorId { get; set; }
 }
 
 public class GetDonorByIdQueryValidator : AbstractValidator<GetDonorByIdQuery>
 {
     public GetDonorByIdQueryValidator()
     {
-        RuleFor(x => x.Id)
+        RuleFor(x => x.DonorId)
             .NotEmpty();
     }
 }

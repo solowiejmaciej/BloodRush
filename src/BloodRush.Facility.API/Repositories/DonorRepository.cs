@@ -33,4 +33,9 @@ public class DonorRepository : IDonorRepository
         if (donor is null) throw new DonorNotFoundException();
         return donor;
     }
+
+    public Task<Stream?> GetDonorPictureByDonorIdAsync(Guid donorId)
+    {
+        throw new NotImplementedException();
+    }
 }
