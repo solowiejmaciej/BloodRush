@@ -1,4 +1,5 @@
 using System.Data;
+using Azure.Storage.Blobs;
 using BloodRush.DonationFacility.API.Entities;
 using BloodRush.DonationFacility.API.Exceptions;
 using BloodRush.DonationFacility.API.Interfaces;
@@ -11,10 +12,16 @@ namespace BloodRush.DonationFacility.API.Repositories;
 public class DonorRepository : IDonorRepository
 {
     private readonly IDbConnection _dbConnection;
+    private readonly BlobContainerClient _blobContainerClient;
 
-    public DonorRepository(IDbConnection dbConnection)
+    public DonorRepository(IDbConnection dbConnection, IConfiguration configuration)
     {
         _dbConnection = dbConnection;
+        string? connectionString = configuration.GetConnectionString("BlobStorage");
+        string? containerName = configuration.GetValue<string>("Azure:BlobContainerName");
+
+        var blobServiceClient = new BlobServiceClient(connectionString);
+        _blobContainerClient = blobServiceClient.GetBlobContainerClient(containerName);
     }
     public async Task<List<Donor>> GetAllDonorsAsync()
     {
@@ -33,9 +40,12 @@ public class DonorRepository : IDonorRepository
         if (donor is null) throw new DonorNotFoundException();
         return donor;
     }
-
-    public Task<Stream?> GetDonorPictureByDonorIdAsync(Guid donorId)
+    public async Task<Stream?> GetDonorPictureByDonorIdAsync(Guid donorId)
     {
-        throw new NotImplementedException();
+        var file = _blobContainerClient.GetBlobClient($"{donorId}-profile-picture");
+        if (!await file.ExistsAsync()) return Stream.Null;
+
+        var content = await file.DownloadContentAsync();
+        return content.Value.Content.ToStream();
     }
 }
