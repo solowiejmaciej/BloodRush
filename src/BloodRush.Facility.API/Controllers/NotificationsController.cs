@@ -1,5 +1,6 @@
 #region
 
+using BloodRush.Contracts.Enums;
 using BloodRush.DonationFacility.API.Dtos;
 using BloodRush.DonationFacility.API.Handlers.Notifications;
 using BloodRush.DonationFacility.API.Models.Requests;
@@ -11,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BloodRush.DonationFacility.API.Controllers;
 
 [ApiController]
-[Route("api/donor/{donorId:Guid}/notifications")]
+[Route("api/donor/{donorId:Guid}/notifications/")]
 public class NotificationsController : ControllerBase
 {
     private readonly ILogger<DonorsController> _logger;

@@ -1,8 +1,9 @@
 using BloodRush.Contracts.Enums;
+using BloodRush.DonationFacility.API.DomainEvents;
 using BloodRush.DonationFacility.API.Interfaces;
 using MediatR;
 
-namespace BloodRush.DonationFacility.API.DomainEvents;
+namespace BloodRush.DonationFacility.API.Handlers.DomainEvents;
 
 public class SuccessfulDonationEventHandler : INotificationHandler<SuccessfulDonationEvent>
 {

@@ -96,6 +96,8 @@ public class NotificationsRepository : INotificationsRepository
             CollectionFacilityId = collectionFacilityId,
             NotificationType = notificationType,
         };
+        _context.NotificationsContent.Add(notificationContent);
+        _context.SaveChanges();
         return notificationContent;
     }
 }

@@ -13,18 +13,22 @@ public class GetAllDonorsQueryHandler : IRequestHandler<GetAllDonorsQuery, List<
 {
     private readonly IDonorRepository _donorRepository;
     private readonly IMapper _mapper;
+    private readonly ILogger<GetAllDonorsQueryHandler> _logger;
 
     public GetAllDonorsQueryHandler(
         IDonorRepository donorRepository,
-        IMapper mapper
+        IMapper mapper,
+        ILogger<GetAllDonorsQueryHandler> logger
     )
     {
         _donorRepository = donorRepository;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public async Task<List<DonorDto>> Handle(GetAllDonorsQuery request, CancellationToken cancellationToken)
     {
+        _logger.LogInformation("HIT");
         var donors = await _donorRepository.GetAllDonorsAsync();
         var donorsDto = _mapper.Map<List<DonorDto>>(donors);
         return donorsDto;

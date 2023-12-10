@@ -7,5 +7,4 @@ public class NotificationDto
     public string? Title { get; set; }
     public required string Message { get; set; }
     public required ENotificationChannel NotificationChannel { get; set; }
-    public required ENotificationType NotificationType { get; set; }
 }

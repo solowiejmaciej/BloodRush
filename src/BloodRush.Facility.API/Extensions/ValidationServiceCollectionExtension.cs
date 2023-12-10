@@ -1,6 +1,7 @@
 #region
 
 using BloodRush.DonationFacility.API.Handlers.Notifications;
+using BloodRush.DonationFacility.API.Models.Requests;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 
@@ -14,5 +15,7 @@ public static class ValidationServiceCollectionExtension
     {
         services.AddFluentValidationAutoValidation();
         services.AddScoped<IValidator<GetNotificationsQuery>, GetNotificationsQueryValidator>();
+        services.AddScoped<IValidator<AddNotificationCommand>, AddNotificationCommandValidator>();
+        services.AddScoped<IValidator<UpdateNotificationContentRequest>, UpdateNotificationContentRequestValidator>();
     }
 }
