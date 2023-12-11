@@ -6,6 +6,7 @@ using System.Reflection;
 using BloodRush.DonationFacility.API.Entities.DbContext;
 using BloodRush.DonationFacility.API.Interfaces;
 using BloodRush.DonationFacility.API.Repositories;
+using BloodRush.DonationFacility.API.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +26,8 @@ public static class GeneralServiceCollectionExtension
         services.AddScoped<IDonorRepository, DonorRepository>();
         services.AddScoped<INotificationsRepository, NotificationsRepository>();
         services.AddScoped<IDonationFacilityRepository, DonationFacilityRepository>();
+
+        services.AddScoped<IQrCodeValidatorService, QrCodeValidatorService>();
         
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         services.AddDbContext<BloodRushFacilityDbContext>(options =>

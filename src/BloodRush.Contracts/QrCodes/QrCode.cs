@@ -27,11 +27,6 @@ public class QrCode
         return new QrCode(donorId);
     }
     
-    public Guid ReadDonorId()
-    {
-        return DonorId;
-    }
-    
     private string Encrypt(string qrCodeString)
     {
         return Convert.ToBase64String(Encoding.UTF8.GetBytes(qrCodeString));
@@ -53,5 +48,10 @@ public class QrCode
     public sealed override string ToString()
     {
         return QrCodeString;
+    }
+
+    public Guid GetDonorId()
+    {
+        return DonorId;
     }
 }
