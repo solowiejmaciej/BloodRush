@@ -7,6 +7,9 @@ using BloodRush.API.Interfaces;
 using BloodRush.API.Interfaces.Repositories;
 using BloodRush.API.Repositories;
 using BloodRush.API.Services;
+using BloodRush.Contracts.QrCodes;
+using BloodRush.Contracts.QrCodes.Interfaces;
+using BloodRush.Contracts.QrCodes.Services;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,6 +23,8 @@ public static class GeneralServiceCollectionExtension
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 
+        services.AddScoped<IQrCodeGenerator, QrCodeGenerator>();
+        
         services.AddTransient<IDbConnection>(sp => new SqlConnection(connectionString));
 
         services.AddScoped<IRestingPeriodRepository, RestingPeriodRepository>();

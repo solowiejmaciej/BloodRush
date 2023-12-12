@@ -3,6 +3,10 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
+using BloodRush.Contracts.QrCodes;
+using BloodRush.Contracts.QrCodes.Interfaces;
+using BloodRush.Contracts.QrCodes.Options;
+using BloodRush.Contracts.QrCodes.Services;
 using BloodRush.DonationFacility.API.Entities.DbContext;
 using BloodRush.DonationFacility.API.Interfaces;
 using BloodRush.DonationFacility.API.Repositories;
@@ -26,8 +30,11 @@ public static class GeneralServiceCollectionExtension
         services.AddScoped<IDonorRepository, DonorRepository>();
         services.AddScoped<INotificationsRepository, NotificationsRepository>();
         services.AddScoped<IDonationFacilityRepository, DonationFacilityRepository>();
+        
+        var qrCodeOptions = configuration.GetSection("QrCodeOptions").Get<QrCodeOptions>();
+        services.AddScoped<IQrCodeService, QrCodeService>();
+        services.AddSingleton<QrCodeOptions>(qrCodeOptions);
 
-        services.AddScoped<IQrCodeValidatorService, QrCodeValidatorService>();
         
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         services.AddDbContext<BloodRushFacilityDbContext>(options =>
