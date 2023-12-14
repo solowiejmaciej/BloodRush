@@ -17,16 +17,19 @@ public class Sender : ISender
     private readonly ILogger<Sender> _logger;
     private readonly IOptions<SmsApiSettings> _config;
     private readonly INotificationsRepository _notificationsRepository;
+    private readonly IDonorRepository _donorRepository;
 
     public Sender(
         ILogger<Sender> logger, 
         IOptions<SmsApiSettings> config,
-        INotificationsRepository notificationsRepository
+        INotificationsRepository notificationsRepository,
+        IDonorRepository donorRepository
 
     )
     {
         _config = config;
         _notificationsRepository = notificationsRepository;
+        _donorRepository = donorRepository;
         _logger = logger;
     }
     
@@ -55,19 +58,20 @@ public class Sender : ISender
 
     private async Task SendSmsAsync(Notification notification)
     {
+        var phoneNumber = await _donorRepository.GetPhoneNumberAsync(notification.DonorId);
         var baseUrl = _config.Value.ApiUrl;
         var options = new RestClientOptions(baseUrl);
         var client = new RestClient(options);
         var request = new RestRequest("/sms", Method.Post);
 
         _logger.LogInformation("Creating request");
-        _logger.LogInformation($"sending sms to {notification.PhoneNumber}");
+        _logger.LogInformation($"sending sms to {phoneNumber}");
 
         request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
         request.AddParameter("key", _config.Value.Key);
         request.AddParameter("password", _config.Value.Password);
         request.AddParameter("from", _config.Value.SenderName);
-        request.AddParameter("to", notification.PhoneNumber);
+        request.AddParameter("to", phoneNumber);
         request.AddParameter("msg", notification.Message);
         
         var response = await client.ExecuteAsync<ErrorResponse>(request);

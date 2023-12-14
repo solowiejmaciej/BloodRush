@@ -1,4 +1,5 @@
 using Azure.Core;
+using BloodRush.API.Exceptions;
 using BloodRush.API.Exceptions.ConfirmationCodes;
 using BloodRush.API.Interfaces;
 using BloodRush.API.Interfaces.Repositories;
@@ -26,11 +27,11 @@ public class ChangePhoneNumberCommandHandler : IRequestHandler<ChangePhoneNumber
         var currentDonorId = _userContextAccessor.GetDonorId();
         var donor = await _donorRepository.GetDonorByIdAsync(currentDonorId);
         
-        var donorWithNewEmail = await _donorRepository.GetDonorByEmailAsync(request.NewPhoneNumber);
-        if (donorWithNewEmail != null) throw new PhoneNumberAlreadyConfirmedException();
+        var donorWithNewPhoneNumber = await _donorRepository.GetDonorByPhoneNumberAsync(request.NewPhoneNumber);
+        if (donorWithNewPhoneNumber != null) throw new DonorNotFoundException();
         
         donor.PhoneNumber = request.NewPhoneNumber;
-        donor.IsEmailConfirmed = false;
+        donor.IsPhoneNumberConfirmed = false;
         await _donorRepository.SaveChangesAsync();
     }
 }

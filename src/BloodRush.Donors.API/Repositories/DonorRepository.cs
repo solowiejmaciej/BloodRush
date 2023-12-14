@@ -43,9 +43,9 @@ public class DonorRepository : IDonorRepository
         return await _context.Donors.ToListAsync();
     }
 
-    public async Task<Donor?> GetDonorByPhoneNumberAsync(string username)
+    public async Task<Donor?> GetDonorByPhoneNumberAsync(string phoneNumber)
     {
-        var donor = await _context.Donors.SingleOrDefaultAsync(d => d.PhoneNumber == username);
+        var donor = await _context.Donors.SingleOrDefaultAsync(d => d.PhoneNumber == phoneNumber);
         return donor;
     }
 

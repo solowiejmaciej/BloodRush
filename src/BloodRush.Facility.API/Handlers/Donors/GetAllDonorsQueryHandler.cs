@@ -28,7 +28,6 @@ public class GetAllDonorsQueryHandler : IRequestHandler<GetAllDonorsQuery, List<
 
     public async Task<List<DonorDto>> Handle(GetAllDonorsQuery request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("HIT");
         var donors = await _donorRepository.GetAllDonorsAsync();
         var donorsDto = _mapper.Map<List<DonorDto>>(donors);
         return donorsDto;
