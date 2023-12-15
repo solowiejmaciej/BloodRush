@@ -6,4 +6,5 @@ public class RestingPeriodDto
     public DateTime? LastDonationDate { get; set; } = null;
     public bool IsRestingPeriodActive { get; set; }
     public int RestingPeriodInMonths { get; set; }
+    public int RemainingDays { get; set; }
 }
