@@ -17,5 +17,4 @@ public class DonorDto
     public required int PhoneNumber { get; set; }
     public required string Email { get; set; }
     public required string HomeAddress { get; set; }
-    public required string Pesel { get; set; }
 }

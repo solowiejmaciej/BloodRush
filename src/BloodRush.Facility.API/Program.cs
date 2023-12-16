@@ -21,6 +21,7 @@ var configuration = new ConfigurationBuilder()
 
 builder.Services.AddGeneralServiceCollection(configuration);
 builder.Services.AddDonationServiceCollectionExtension();
+builder.Services.AddBloodNeedServiceCollectionExtension();
 builder.Services.AddEventsServiceCollectionExtension(configuration);
 builder.Services.AddValidationServiceCollectionExtension();
 builder.Services.AddSwaggerServiceCollectionExtension();

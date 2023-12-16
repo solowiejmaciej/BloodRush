@@ -25,7 +25,8 @@ public class AddNewDonorCommandHandlerTests
         DateOfBirth = DateTime.Today,
         PhoneNumber = "123456789",
         HomeAddress = "string",
-        Pesel = "123456789"
+        Pesel = "123456789",
+        MaxDonationRangeInKm = 0
     };
     private readonly Mock<IDonorRepository> _donorRepository;
     private readonly IMapper _mapper;

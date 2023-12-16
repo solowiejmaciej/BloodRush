@@ -3,15 +3,15 @@ using MediatR;
 
 namespace BloodRush.DonationFacility.API.Handlers.Auth;
 
-public class GenerateDoctorTokenCommandHandler : IRequestHandler<GenerateDoctorTokenCommand, LoginResult>
+public class GenerateDoctorTokenCommandHandler : IRequestHandler<GenerateUserTokenCommand, LoginResult>
 {
-    public Task<LoginResult> Handle(GenerateDoctorTokenCommand request, CancellationToken cancellationToken)
+    public Task<LoginResult> Handle(GenerateUserTokenCommand request, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 }
 
-public record GenerateDoctorTokenCommand : IRequest<LoginResult>
+public record GenerateUserTokenCommand : IRequest<LoginResult>
 {
     public required string Email { get; init; }
     public required string Password { get; init; }

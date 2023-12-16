@@ -21,4 +21,5 @@ public class Donor
     public bool IsEmailConfirmed { get; set; }
     public required string HomeAddress { get; set; }
     public required string Pesel { get; set; }
+    public required int MaxDonationRangeInKm { get; set; }
 }

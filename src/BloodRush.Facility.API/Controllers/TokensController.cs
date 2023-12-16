@@ -25,9 +25,9 @@ public class TokensController : ControllerBase
     }
     
 
-    [HttpPost("doctor")]
-    public async Task<IActionResult> GenerateDoctorToken(
-        [FromBody] GenerateDoctorTokenCommand command
+    [HttpPost("user")]
+    public async Task<IActionResult> GenerateUserToken(
+        [FromBody] GenerateUserTokenCommand command
     )
     {
         var result = await _mediator.Send(command);

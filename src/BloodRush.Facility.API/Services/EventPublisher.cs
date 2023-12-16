@@ -48,12 +48,4 @@ public class EventPublisher : IEventPublisher
             Message = content.Message
         }, cancellationToken);
     }
-
-    public async Task PublishBloodNeedCreatedEventAsync(int collectionFacilityId, bool isUrgent,
-        CancellationToken cancellationToken = default)
-    { 
-        var bloodNeedCreatedEvent = new BloodNeedCreatedEvent { CollectionFacilityId = collectionFacilityId, IsUrgent = isUrgent}; 
-        
-        await _publishEndpoint.Publish(bloodNeedCreatedEvent, cancellationToken);
-    }
 }

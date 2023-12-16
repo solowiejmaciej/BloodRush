@@ -1,12 +1,22 @@
+using BloodRush.DonationFacility.API.Interfaces;
 using MediatR;
 
 namespace BloodRush.DonationFacility.API.Handlers.BloodNeed;
 
 public class CancelBloodNeedCommandHandler : IRequestHandler<CancelBloodNeedCommand>
 {
-    public Task Handle(CancelBloodNeedCommand request, CancellationToken cancellationToken)
+    private readonly IEventPublisher _eventPublisher;
+
+    public CancelBloodNeedCommandHandler(
+        IEventPublisher eventPublisher
+        )
     {
-        throw new NotImplementedException();
+        _eventPublisher = eventPublisher;
+    }
+
+    public async Task Handle(CancelBloodNeedCommand request, CancellationToken cancellationToken)
+    {
+        //TODO: Implement logic to cancel blood need and publish events to sent notification to donors
     }
 }
 

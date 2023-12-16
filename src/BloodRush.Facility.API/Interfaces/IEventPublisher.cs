@@ -17,7 +17,4 @@ public interface IEventPublisher
         CancellationToken cancellationToken = default);
     
     Task PublishSendNotificationEventAsync(Guid donorId, int donationFacilityId, NotificationContent content ,CancellationToken cancellationToken = default);
-
-
-    Task PublishBloodNeedCreatedEventAsync(int collectionFacilityId, bool isUrgent ,CancellationToken cancellationToken = default);
 }

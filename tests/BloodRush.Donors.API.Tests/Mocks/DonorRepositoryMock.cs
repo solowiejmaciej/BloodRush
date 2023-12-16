@@ -17,22 +17,8 @@ public static class DonorRepositoryMock
     {
         static List<Donor> GetDonors()
         {
-            return new List<Donor>
+            var list = new List<Donor>
             {
-                new Donor
-                {
-                    Id = new Guid("9a1cbadd-7571-4d0c-bdc2-b5487149d276"),
-                    FirstName = "John",
-                    BloodType = EBloodType.ABPositive,
-                    Email = "john@gmail.com",
-                    Surname = "Doe",
-                    Password = "string",
-                    Sex = ESex.Male,
-                    DateOfBirth = DateTime.Today,
-                    PhoneNumber = "123456789",
-                    HomeAddress = "string",
-                    Pesel = "123456789"
-                },
                 new Donor
                 {
                     Id = new Guid("9a1cbadd-7571-4d0c-bdc2-b5487149d277"),
@@ -45,9 +31,26 @@ public static class DonorRepositoryMock
                     DateOfBirth = DateTime.Today,
                     PhoneNumber = "987654321",
                     HomeAddress = "string",
-                    Pesel = "987654321"
+                    Pesel = "987654321",
+                    MaxDonationRangeInKm = 0
                 }
             };
+            list.Add(new Donor
+            {
+                Id = new Guid("9a1cbadd-7571-4d0c-bdc2-b5487149d276"),
+                FirstName = "John",
+                BloodType = EBloodType.ABPositive,
+                Email = "john@gmail.com",
+                Surname = "Doe",
+                Password = "string",
+                Sex = ESex.Male,
+                DateOfBirth = DateTime.Today,
+                PhoneNumber = "123456789",
+                HomeAddress = "string",
+                Pesel = "123456789",
+                MaxDonationRangeInKm = 0
+            });
+            return list;
         }
 
         var donorRepositoryMock = new Mock<IDonorRepository>();

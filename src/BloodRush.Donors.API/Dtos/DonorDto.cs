@@ -17,4 +17,5 @@ public class DonorDto
     public required string Email { get; set; }
     public required string HomeAddress { get; set; }
     public required string Pesel { get; set; }
+    public required int MaxDonationRangeInKm { get; set; }
 }
