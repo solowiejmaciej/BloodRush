@@ -52,6 +52,14 @@ public class DonorInfoRepository : IDonorInfoRepository
         return restingPeriodInfo;
     }
 
+    public Task<List<Guid>> GetNotRestingDonorsIdsAsync()
+    {
+        return _context.DonorsRestingPeriodInfo
+            .Where(d => d.IsRestingPeriodActive == false)
+            .Select(d => d.DonorId)
+            .ToListAsync();
+    }
+
     public async Task UpdateRestingPeriodInfoAsync(Guid id, int restingPeriodInMonths)
     {
         var restingPeriodInfo = await GetRestingPeriodInfoByDonorIdAsync(id);

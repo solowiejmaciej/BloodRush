@@ -13,7 +13,6 @@ public abstract class CollectionFacilityConstants
     public const string DefaultBloodNeedTitle = "Potrzebna krew";
     public const string DefaultBloodNeedMessage = "W twojej okolicy potrzebna jest krew!";
     public const string DefaultUrgentBloodNeedTitle = "Potrzebna krew";
-
     public const string DefaultUrgentBloodNeedMessage =
         "Wiemy ze punkt poboru krwi jest dalej niz ustawiles w ustawieniach, ale sytuacja jest naprawde pilna, potrzebna jest twoja krew!";
 }

@@ -28,7 +28,7 @@ public class BloodNeedController : ControllerBase
         var command = new AddNewBloodNeedCommand
         {
             CollectionFacilityId = collectionFacilityId,
-            IsUrget = isUrgent
+            IsUrgent = isUrgent
         };
         await _mediator.Send(command);
         

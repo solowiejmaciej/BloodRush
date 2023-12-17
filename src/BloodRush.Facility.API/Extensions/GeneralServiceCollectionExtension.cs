@@ -30,6 +30,8 @@ public static class GeneralServiceCollectionExtension
         services.AddScoped<IDonorRepository, DonorRepository>();
         services.AddScoped<INotificationsRepository, NotificationsRepository>();
         services.AddScoped<IDonationFacilityRepository, DonationFacilityRepository>();
+        services.AddScoped<IBloodNeedRepository, BloodNeedRepository>();
+        services.AddScoped<ILocationService, LocationService>();
         
         var qrCodeOptions = configuration.GetSection("QrCodeOptions").Get<QrCodeOptions>();
         services.AddScoped<IQrCodeService, QrCodeService>();

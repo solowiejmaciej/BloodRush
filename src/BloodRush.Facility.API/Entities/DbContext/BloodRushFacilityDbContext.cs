@@ -14,4 +14,5 @@ public class BloodRushFacilityDbContext : Microsoft.EntityFrameworkCore.DbContex
     public DbSet<Donation> Donations { get; set; }
     public DbSet<DonorRestingPeriodInfo> DonorsRestingPeriodInfo { get; set; }
     public DbSet<DonationFacility> DonationFacilities { get; set; }
+    public DbSet<BloodNeed> BloodNeeds { get; set; }
 }

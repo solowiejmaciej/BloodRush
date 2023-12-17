@@ -4,6 +4,7 @@ namespace BloodRush.DonationFacility.API.Interfaces;
 
 public interface IBloodNeedRepository
 {
-    public Task CancelBloodNeedAsync(int bloodNeedId, CancellationToken cancellationToken = default);
-    public Task CreateBloodNeedAsync(BloodNeed bloodNeed, CancellationToken cancellationToken = default);
+    Task CancelBloodNeedAsync(int bloodNeedId, CancellationToken cancellationToken = default);
+    Task CreateBloodNeedAsync(BloodNeed bloodNeed, CancellationToken cancellationToken = default);
+    Task UpdateNotifiedDonorsCountAsync(int notificationBloodNeedId, int donorsIdsCount, CancellationToken cancellationToken);
 }

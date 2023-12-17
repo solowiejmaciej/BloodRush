@@ -33,7 +33,8 @@ public class NotificationBuilder : INotificationBuilder
             CollectionFacilityId = collectionFacilityId,
             NotificationChannel = donorNotificationInfo.NotificationChannel,
             Message = notificationContent.Message,
-            Title = notificationContent.Title
+            Title = notificationContent.Title,
+            NotificationType = notificationType
         };
         
         return notification;
@@ -49,7 +50,8 @@ public class NotificationBuilder : INotificationBuilder
             CollectionFacilityId = collectionFacilityId,
             NotificationChannel = notificationInfo.NotificationChannel,
             Message = message,
-            Title = title
+            Title = title,
+            NotificationType = ENotificationType.Custom
         };
         
         return notification;
@@ -66,7 +68,8 @@ public class NotificationBuilder : INotificationBuilder
             DonorId = donorId,
             CollectionFacilityId = -1,
             Message = string.Format(NotificationConstants.ConfirmationCodeTemplate, confirmationCode.Code),
-            NotificationChannel = notificationChannel
+            NotificationChannel = notificationChannel,
+            NotificationType = ENotificationType.ConfirmationCode
         };
         
         return notification;

@@ -1,4 +1,5 @@
 using BloodRush.Contracts.Enums;
+using BloodRush.DonationFacility.API.DomainEvents;
 using BloodRush.DonationFacility.API.Exceptions;
 using BloodRush.DonationFacility.API.Interfaces;
 using MediatR;
@@ -7,20 +8,20 @@ namespace BloodRush.DonationFacility.API.Handlers.BloodNeed;
 
 public class AddNewBloodNeedCommandHandler : IRequestHandler<AddNewBloodNeedCommand>
 {
-    private readonly IEventPublisher _eventPublisher;
     private readonly IDonationFacilityRepository _donationFacilityRepository;
-    private readonly IBloodNeedService _bloodNeedService;
+    private readonly IMediator _mediator;
+    private readonly IBloodNeedRepository _bloodNeedRepository;
 
 
     public AddNewBloodNeedCommandHandler(
-        IEventPublisher eventPublisher,
         IDonationFacilityRepository donationFacilityRepository,
-        IBloodNeedService bloodNeedService
+        IMediator mediator,
+        IBloodNeedRepository bloodNeedRepository
         )
     {
-        _eventPublisher = eventPublisher;
         _donationFacilityRepository = donationFacilityRepository;
-        _bloodNeedService = bloodNeedService;
+        _mediator = mediator;
+        _bloodNeedRepository = bloodNeedRepository;
     }
     public async Task Handle(AddNewBloodNeedCommand request, CancellationToken cancellationToken)
     {
@@ -34,15 +35,23 @@ public class AddNewBloodNeedCommandHandler : IRequestHandler<AddNewBloodNeedComm
         var bloodNeed = new Entities.BloodNeed
         {
             DonationFacilityId = request.CollectionFacilityId,
-            IsUrgent = request.IsUrget,
-        }; 
-        
-        await _bloodNeedService.CreateBloodNeedAsync(bloodNeed,cancellationToken);
+            IsUrgent = request.IsUrgent,
+        };
+        await _bloodNeedRepository.CreateBloodNeedAsync(bloodNeed, cancellationToken);
+        //TODO: Add event for urgent blood need
+        await _mediator.Publish(
+            new BloodNeedCreatedEvent()
+            {
+                BloodNeedId = bloodNeed.Id,
+                DonationFacilityId = bloodNeed.DonationFacilityId,
+                IsUrgent = bloodNeed.IsUrgent
+            },
+            cancellationToken);
     }
 }
 
 public class AddNewBloodNeedCommand : IRequest
 {
     public int CollectionFacilityId { get; set; }
-    public bool IsUrget { get; set; }
+    public bool IsUrgent { get; set; }
 }

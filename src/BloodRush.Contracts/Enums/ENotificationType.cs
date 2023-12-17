@@ -8,5 +8,6 @@ public enum ENotificationType
     BloodNeed,
     UrgentBloodNeed,
     DonationReminder,
-    Custom
+    Custom,
+    ConfirmationCode
 }
