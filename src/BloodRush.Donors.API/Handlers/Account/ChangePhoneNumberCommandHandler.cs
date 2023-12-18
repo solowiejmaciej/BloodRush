@@ -28,7 +28,7 @@ public class ChangePhoneNumberCommandHandler : IRequestHandler<ChangePhoneNumber
         var donor = await _donorRepository.GetDonorByIdAsync(currentDonorId);
         
         var donorWithNewPhoneNumber = await _donorRepository.GetDonorByPhoneNumberAsync(request.NewPhoneNumber);
-        if (donorWithNewPhoneNumber != null) throw new DonorNotFoundException();
+        if (donorWithNewPhoneNumber != null) throw new PhoneNumberAlreadyConfirmedException();
         
         donor.PhoneNumber = request.NewPhoneNumber;
         donor.IsPhoneNumberConfirmed = false;
