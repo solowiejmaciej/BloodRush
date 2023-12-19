@@ -5,7 +5,7 @@ namespace BloodRush.DonationFacility.API.Interfaces;
 public interface IDonationRepository
 {
     Task AddNewDonation(Donation donation);
-    Task GetDonationsByDonorId(Guid donorId);
-    Task GetDonationsCountByDonorId(Guid donorId);
-    Task GetDonatedBloodQuantityByDonorId(Guid donorId);
+    Task<List<Donation>> GetDonationsByDonorIdAsync(Guid donorId);
+    Task<int> GetDonationsCountByDonorId(Guid donorId);
+    Task<int> GetDonatedBloodQuantityByDonorId(Guid donorId);
 }

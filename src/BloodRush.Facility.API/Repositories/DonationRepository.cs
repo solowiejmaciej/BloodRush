@@ -1,6 +1,7 @@
 using BloodRush.DonationFacility.API.Entities;
 using BloodRush.DonationFacility.API.Entities.DbContext;
 using BloodRush.DonationFacility.API.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace BloodRush.DonationFacility.API.Repositories;
 
@@ -20,18 +21,20 @@ public class DonationRepository : IDonationRepository
         await _facilityDbContext.SaveChangesAsync();
     }
 
-    public Task GetDonationsByDonorId(Guid donorId)
+    public async Task<List<Donation>> GetDonationsByDonorIdAsync(Guid donorId)
     {
-        throw new NotImplementedException();
+       return await _facilityDbContext.Donations.Where(donation => donation.DonorId == donorId).ToListAsync();
     }
 
-    public Task GetDonationsCountByDonorId(Guid donorId)
+    public async Task<int> GetDonationsCountByDonorId(Guid donorId)
     {
-        throw new NotImplementedException();
+        var donations = await GetDonationsByDonorIdAsync(donorId);
+        return donations.Count;
     }
 
-    public Task GetDonatedBloodQuantityByDonorId(Guid donorId)
+    public async Task<int> GetDonatedBloodQuantityByDonorId(Guid donorId)
     {
-        throw new NotImplementedException();
+        var donations = await GetDonationsByDonorIdAsync(donorId);
+        return donations.Sum(donation => donation.QuantityInMl);
     }
 }

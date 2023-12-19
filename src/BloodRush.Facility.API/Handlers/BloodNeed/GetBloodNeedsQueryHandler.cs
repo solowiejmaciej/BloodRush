@@ -1,13 +1,24 @@
+using AutoMapper;
 using BloodRush.DonationFacility.API.Dtos;
+using BloodRush.DonationFacility.API.Interfaces;
 using MediatR;
 
 namespace BloodRush.DonationFacility.API.Handlers.BloodNeed;
 
 public class GetBloodNeedsQueryHandler : IRequestHandler<GetBloodNeedsQuery, List<BloodNeedDto>>
 {
-    public Task<List<BloodNeedDto>> Handle(GetBloodNeedsQuery request, CancellationToken cancellationToken)
+    private readonly IBloodNeedRepository _bloodNeedRepository;
+    private readonly IMapper _mapper;
+
+    public GetBloodNeedsQueryHandler(IBloodNeedRepository bloodNeedRepository, IMapper mapper)
     {
-        throw new NotImplementedException();
+        _bloodNeedRepository = bloodNeedRepository;
+        _mapper = mapper;
+    }
+    public async Task<List<BloodNeedDto>> Handle(GetBloodNeedsQuery request, CancellationToken cancellationToken)
+    {
+        var bloodNeeds =  await _bloodNeedRepository.GetBloodNeedsAsync(request.CollectionFacilityId, cancellationToken);
+        return _mapper.Map<List<BloodNeedDto>>(bloodNeeds);
     }
 }
 

@@ -40,6 +40,11 @@ public class ErrorHandlingMiddleware : IMiddleware
         {
             context.Response.StatusCode = 400;
             await context.Response.WriteAsync(restingException.Message);
+        }        
+        catch (InvalidQrCodeException qrCodeException)
+        {
+            context.Response.StatusCode = 400;
+            await context.Response.WriteAsync(qrCodeException.Message);
         }
         catch (UnauthorizedAccessException unauthorizedAccess)
         {

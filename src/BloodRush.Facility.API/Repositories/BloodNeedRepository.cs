@@ -39,4 +39,9 @@ public class BloodNeedRepository : IBloodNeedRepository
         _dbContext.BloodNeeds.Update(bloodNeed);
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task<List<BloodNeed>> GetBloodNeedsAsync(int requestCollectionFacilityId, CancellationToken cancellationToken)
+    {
+        return await _dbContext.BloodNeeds.Where(bloodNeed => bloodNeed.DonationFacilityId == requestCollectionFacilityId).ToListAsync(cancellationToken);
+    }
 }
