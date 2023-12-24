@@ -35,9 +35,10 @@ public class BloodNeedCreatedEventHandler : INotificationHandler<BloodNeedCreate
 
     public async Task Handle(BloodNeedCreatedEvent notification, CancellationToken cancellationToken)
     {
+        //TODO this needs to be refactored to use background jobs, maybe Quartz?
         var donorsIds = notification.IsUrgent switch
         {
-            true => await _donorInfoRepository.GetNotRestingDonorsIdsAsync(),
+            true => await GetNotRestingDonorsAsync(),
             false => await GetMatchingDistanceDonorsIds(notification.DonationFacilityId)
         };
 
@@ -50,7 +51,7 @@ public class BloodNeedCreatedEventHandler : INotificationHandler<BloodNeedCreate
     private async Task<List<Guid>> GetMatchingDistanceDonorsIds(int donationFacilityId)
     {
         var potentialDonorsIds = new List<Guid>();
-        var notRestingDonorsIds = await _donorInfoRepository.GetNotRestingDonorsIdsAsync();
+        var notRestingDonorsIds = await GetNotRestingDonorsAsync();
         foreach (var donorsId in notRestingDonorsIds)
         {
             var donor = await _donorRepository.GetDonorByIdAsync(donorsId);
@@ -75,11 +76,28 @@ public class BloodNeedCreatedEventHandler : INotificationHandler<BloodNeedCreate
         {
             throw new DonationFacilityNotFoundException();
         }
-
+        
         var distance = await _locationService.GetDistanceBetweenTwoAddresses(donor.HomeAddress, donationFacility.Address);
-
+        
         double maxDistance = donor.MaxDonationRangeInKm;
         return distance <= maxDistance;
+    }
+
+    private async Task<List<Guid>> GetNotRestingDonorsAsync()
+    {
+        var donors = await _donorRepository.GetAllDonorsAsync();
+        var notRestingDonorsIds = new List<Guid>();
+        foreach (var donor in donors)
+        {
+            var donorInfo = await _donorInfoRepository.GetRestingPeriodInfoByDonorIdAsync(donor.Id);
+            
+            if (!donorInfo.IsRestingPeriodActive)
+            {
+                notRestingDonorsIds.Add(donor.Id);
+            }
+        }
+        
+        return notRestingDonorsIds;
     }
 }
 

@@ -52,9 +52,9 @@ public class DonorInfoRepository : IDonorInfoRepository
         return restingPeriodInfo;
     }
 
-    public Task<List<Guid>> GetNotRestingDonorsIdsAsync()
+    public async Task<List<Guid>> GetNotRestingDonorsIdsAsync()
     {
-        return _context.DonorsRestingPeriodInfo
+        return await _context.DonorsRestingPeriodInfo
             .Where(d => d.IsRestingPeriodActive == false)
             .Select(d => d.DonorId)
             .ToListAsync();

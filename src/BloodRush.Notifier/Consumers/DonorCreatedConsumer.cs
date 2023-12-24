@@ -37,5 +37,6 @@ public class DonorCreatedConsumer : IConsumer<DonorCreatedEvent>
         await _notificationsRepository.AddDefaultNotificationInfoAsync(donorCreatedEvent.DonorId);
         var notification = await _notificationBuilder.BuildAsync(donorCreatedEvent.DonorId, -1, ENotificationType.Welcome);
         await _sender.SendAsync(notification);
+        //TODO: Add resting period info
     }
 }

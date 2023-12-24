@@ -54,6 +54,7 @@ public record AddNewDonorCommand : IRequest<Guid>
     public required string Email { get; set; }
     public required string HomeAddress { get; set; }
     public required string Pesel { get; set; }
+    public required int MaxDonationRangeInKm { get; set; }
 }
 
 public class AddNewDonorCommandValidator : AbstractValidator<AddNewDonorCommand>
@@ -89,6 +90,8 @@ public class AddNewDonorCommandValidator : AbstractValidator<AddNewDonorCommand>
             .NotEmpty();
         RuleFor(x => x.BloodType)
             .IsInEnum();
+        RuleFor(x => x.MaxDonationRangeInKm)
+            .InclusiveBetween(1, 1000);
     }
 
     private bool UniquePhoneNumber(string phoneNumber)
