@@ -35,14 +35,19 @@ public class BloodNeedCreatedEventHandler : INotificationHandler<BloodNeedCreate
 
     public async Task Handle(BloodNeedCreatedEvent notification, CancellationToken cancellationToken)
     {
-        var donorsIds = await GetPotentialDonorsIds(notification.DonationFacilityId);
+        var donorsIds = notification.IsUrgent switch
+        {
+            true => await _donorInfoRepository.GetNotRestingDonorsIdsAsync(),
+            false => await GetMatchingDistanceDonorsIds(notification.DonationFacilityId)
+        };
+
         await Task.WhenAll(donorsIds.Select(donorId => _eventPublisher.PublishSendNotificationEventAsync(donorId,
             ENotificationType.BloodNeed, notification.DonationFacilityId, cancellationToken)));
         await _bloodNeedRepository.UpdateNotifiedDonorsCountAsync(notification.BloodNeedId, donorsIds.Count,
             cancellationToken);
     }
 
-    private async Task<List<Guid>> GetPotentialDonorsIds(int donationFacilityId)
+    private async Task<List<Guid>> GetMatchingDistanceDonorsIds(int donationFacilityId)
     {
         var potentialDonorsIds = new List<Guid>();
         var notRestingDonorsIds = await _donorInfoRepository.GetNotRestingDonorsIdsAsync();
