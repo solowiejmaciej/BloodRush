@@ -15,6 +15,7 @@ public class SendNotificationConsumer : IConsumer<SendNotificationEvent>
 {
     private readonly INotificationBuilder _notificationBuilder;
     private readonly IDonorRepository _donorRepository;
+    private readonly ILogger<SendNotificationConsumer> _logger;
     private readonly ISender _sender;
 
     public SendNotificationConsumer(
@@ -26,6 +27,7 @@ public class SendNotificationConsumer : IConsumer<SendNotificationEvent>
     {
         _notificationBuilder = notificationBuilder;
         _donorRepository = donorRepository;
+        _logger = logger;
         _sender = sender;
     }
 
@@ -37,6 +39,7 @@ public class SendNotificationConsumer : IConsumer<SendNotificationEvent>
         var donorExists = await _donorRepository.ExistsAsync(notificationEvent.DonorId);
         if (!donorExists)
         {
+            _logger.LogInformation(notificationEvent.DonorId.ToString());
             throw new DonorNotFoundException();
         }
         

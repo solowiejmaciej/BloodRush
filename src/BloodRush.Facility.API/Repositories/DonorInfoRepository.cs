@@ -33,8 +33,8 @@ public class DonorInfoRepository : IDonorInfoRepository
     }
     
     /// <summary>
-    /// Returns <c> DonorRestingPeriodInfo </c> for given <c> donorId </c>
-    /// If <c> DonorRestingPeriodInfo </c> does not exist, creates new one with default resting period
+    /// Returns <c>DonorRestingPeriodInfo</c> for given <c> donorId </c>
+    /// If<c> DonorRestingPeriodInfo </c> does not exist, creates new one with default resting period
     /// only if Donor exists
     /// </summary>
     public async Task<DonorRestingPeriodInfo> GetRestingPeriodInfoByDonorIdAsync(Guid id)
@@ -50,14 +50,6 @@ public class DonorInfoRepository : IDonorInfoRepository
             return await AddDefaultRestingPeriodInfoAsync(id);
         }
         return restingPeriodInfo;
-    }
-
-    public async Task<List<Guid>> GetNotRestingDonorsIdsAsync()
-    {
-        return await _context.DonorsRestingPeriodInfo
-            .Where(d => d.IsRestingPeriodActive == false)
-            .Select(d => d.DonorId)
-            .ToListAsync();
     }
 
     public async Task UpdateRestingPeriodInfoAsync(Guid id, int restingPeriodInMonths)

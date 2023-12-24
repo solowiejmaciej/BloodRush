@@ -48,4 +48,13 @@ public class DonorRepository : IDonorRepository
         var content = await file.DownloadContentAsync();
         return content.Value.Content.ToStream();
     }
+    
+    public async Task<List<DonorBloodNeedInfo>> GetBloodNeedInfoForNotRestingDonorsAsync()
+    {
+        _dbConnection.Open();
+        var result = await _dbConnection.QueryAsync<DonorBloodNeedInfo>
+            ("SELECT d.[Id], r.IsRestingPeriodActive, d.HomeAddress, d.MaxDonationRangeInKm  FROM [BloodRush].[dbo].[Donors] d inner join DonorsRestingPeriodInfo r on d.Id = r.DonorId where r.IsRestingPeriodActive != 1");
+        _dbConnection.Close();
+        return result.ToList();
+    }
 }

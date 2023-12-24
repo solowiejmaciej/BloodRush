@@ -24,12 +24,14 @@ builder.Services.AddDonationServiceCollectionExtension();
 builder.Services.AddEventsServiceCollectionExtension(configuration);
 builder.Services.AddValidationServiceCollectionExtension();
 builder.Services.AddSwaggerServiceCollectionExtension();
+builder.Services.AddHangfireServiceCollection(configuration);
 
 var app = builder.Build();
 
 
-    app.UseSwagger();
-    app.UseSwaggerUI();
+app.UseSwagger();
+app.UseSwaggerUI();
+app.UseHangfire(configuration);
 
 
 app.UseHttpsRedirection();
