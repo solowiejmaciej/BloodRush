@@ -1,18 +1,14 @@
 ﻿#region
 
 using BloodRush.DonationFacility.API.DomainEvents;
+using BloodRush.DonationFacility.API.Entities;
 using BloodRush.DonationFacility.API.Hangfire.Jobs;
+using BloodRush.DonationFacility.API.Interfaces;
 using Hangfire;
 
 #endregion
 
 namespace BloodRush.DonationFacility.API.Hangfire.Manager;
-
-public interface IJobManager
-{
-    void EnqueueProcessBloodNeedCreatedJob(BloodNeedCreatedEvent notification);
-    
-}
 
 public class JobManager : IJobManager
 {
@@ -23,9 +19,9 @@ public class JobManager : IJobManager
         _backgroundJobClient = backgroundJobClient;
     }
 
-    public void EnqueueProcessBloodNeedCreatedJob(BloodNeedCreatedEvent notification)
+    public void EnqueueProcessBloodNeedCreatedJob(BloodNeed bloodNeed)
     {
         _backgroundJobClient.Enqueue<ProcessBloodNeedCreatedJob>(x =>
-            x.Execute(default, default, notification));
+            x.Execute(default, default, bloodNeed));
     }
 }

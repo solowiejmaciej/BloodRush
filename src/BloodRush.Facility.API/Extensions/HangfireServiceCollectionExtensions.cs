@@ -1,6 +1,7 @@
 #region
 
 using BloodRush.DonationFacility.API.Hangfire.Manager;
+using BloodRush.DonationFacility.API.Interfaces;
 using Hangfire;
 using HangfireBasicAuthenticationFilter;
 using NotificationService.Hangfire;
@@ -11,14 +12,14 @@ namespace BloodRush.DonationFacility.API.Extensions;
 
 public static class HangfireServiceCollectionExtensions
 {
-    public static IServiceCollection AddHangfireServiceCollection(this IServiceCollection services, IConfiguration configuration)
+    public static void AddHangfireServiceCollection(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddHangfire(config => config
             .UseSimpleAssemblyNameTypeSerializer()
             .UseRecommendedSerializerSettings()
             .UseSqlServerStorage(configuration.GetConnectionString("Hangfire")));
 
-        services.AddHangfireServer((serviceProvider, bjsOptions) =>
+        services.AddHangfireServer((_, bjsOptions) =>
         {
             bjsOptions.ServerName = "BloodRush.DonationFacility.API";
             bjsOptions.Queues = new[]
@@ -31,11 +32,9 @@ public static class HangfireServiceCollectionExtensions
         });
 
         services.AddScoped<IJobManager, JobManager>();
-
-        return services;
     }
 
-    public static IApplicationBuilder UseHangfire(this IApplicationBuilder app, IConfiguration configuration)
+    public static void UseHangfire(this IApplicationBuilder app, IConfiguration configuration)
     {
    
         var hangfireSettings = configuration.GetSection("HangfireSettings");
@@ -52,6 +51,5 @@ public static class HangfireServiceCollectionExtensions
                 }
             }
         });
-        return app;
     }
 }

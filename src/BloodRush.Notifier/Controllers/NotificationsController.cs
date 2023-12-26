@@ -1,5 +1,4 @@
 using BloodRush.Notifier.Handlers;
-using BloodRush.Notifier.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,12 +1,10 @@
 #region
 
 using BloodRush.Contracts.Enums;
-using BloodRush.DonationFacility.API.DomainEvents;
 using BloodRush.DonationFacility.API.Entities;
 using BloodRush.DonationFacility.API.Interfaces;
 using Hangfire;
 using Hangfire.Server;
-using MassTransit.Initializers;
 using NotificationService.Hangfire;
 
 #endregion
@@ -46,21 +44,21 @@ public sealed class ProcessBloodNeedCreatedJob
     public async Task Execute(
         PerformContext context,
         CancellationToken cancellationToken,
-        BloodNeedCreatedEvent notification
+        BloodNeed bloodNeed
         )
     {
-        _logger.LogInformation($"Processing BloodNeedCreatedEvent with id {notification.BloodNeedId} for donation facility {notification.DonationFacilityId}, jobId: {context.BackgroundJob.Id}");
-        var donorsIds = notification.IsUrgent switch
+        _logger.LogInformation($"Processing BloodNeedCreatedEvent with id {bloodNeed.Id} for donation facility {bloodNeed.DonationFacilityId}, jobId: {context.BackgroundJob.Id}");
+        var donorsIds = bloodNeed.IsUrgent switch
         {
             true => await GetMatchingDonorsIds(),
-            false => await GetMatchingDistanceDonorsIds(notification.DonationFacilityId)
+            false => await GetMatchingDistanceDonorsIds(bloodNeed.DonationFacilityId)
         };
         
         await Task.WhenAll(donorsIds.Select(donorId => _eventPublisher.PublishSendNotificationEventAsync(donorId,
-            ENotificationType.BloodNeed, notification.DonationFacilityId, cancellationToken)));
-        await _bloodNeedRepository.UpdateNotifiedDonorsCountAsync(notification.BloodNeedId, donorsIds.Count,
+            ENotificationType.BloodNeed, bloodNeed.DonationFacilityId, cancellationToken)));
+        await _bloodNeedRepository.UpdateNotifiedDonorsCountAsync(bloodNeed.Id, donorsIds.Count,
             cancellationToken);
-        _logger.LogInformation($"Processed BloodNeedCreatedEvent with id {notification.BloodNeedId} for donation facility {notification.DonationFacilityId}, jobId: {context.BackgroundJob.Id}");
+        _logger.LogInformation($"Processed BloodNeedCreatedEvent with id {bloodNeed.Id} for donation facility {bloodNeed.DonationFacilityId}, jobId: {context.BackgroundJob.Id}");
         _logger.LogInformation($"Published events count: {donorsIds.Count}");
     }
     

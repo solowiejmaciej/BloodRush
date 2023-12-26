@@ -65,6 +65,11 @@ public class NotificationsRepository : INotificationsRepository
         return _context.SaveChangesAsync();
     }
 
+    public Task<List<Notification>> GetNotificationsByDonorIdAsync(Guid donorId)
+    {
+        return _context.Notifications.Where(n => n.DonorId == donorId).ToListAsync();
+    }
+
     private NotificationContent CreateDefaultNotificationContent(int collectionFacilityId, ENotificationType notificationType)
     {
         var title = notificationType switch

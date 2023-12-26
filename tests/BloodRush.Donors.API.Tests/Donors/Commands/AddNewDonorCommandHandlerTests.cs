@@ -58,7 +58,8 @@ public class AddNewDonorCommandHandlerTests
             PhoneNumber = Donor.PhoneNumber,
             Email = Donor.Email,
             HomeAddress = Donor.HomeAddress,
-            Pesel = Donor.Pesel
+            Pesel = Donor.Pesel,
+            MaxDonationRangeInKm = 50
         };
         var handler = new AddNewDonorCommandHandler(_donorRepository.Object, _mapper, _eventPublisher.Object,
             _loginManager.Object);

@@ -27,14 +27,16 @@ public class NotificationBuilder : INotificationBuilder
         
         var notificationContent = await BuildNotificationContentAsync(collectionFacilityId,
             notificationType);
-        var notification = new Notification
+        var notification = new Notification()
         {
             DonorId = donorId,
             CollectionFacilityId = collectionFacilityId,
-            NotificationChannel = donorNotificationInfo.NotificationChannel,
             Message = notificationContent.Message,
             Title = notificationContent.Title,
-            NotificationType = notificationType
+            NotificationChannel = donorNotificationInfo.NotificationChannel,
+            NotificationChannelLabel = Enum.GetName(donorNotificationInfo.NotificationChannel)!,
+            NotificationType = notificationType,
+            NotificationTypeLabel = Enum.GetName(notificationType)!
         };
         
         return notification;
@@ -44,35 +46,39 @@ public class NotificationBuilder : INotificationBuilder
     { 
         var notificationInfo = await _notificationsRepository.GetNotificationInfoByDonorIdAsync(donorId);
         
-        var notification = new Notification
+        var notification = new Notification()
         {
             DonorId = donorId,
             CollectionFacilityId = collectionFacilityId,
-            NotificationChannel = notificationInfo.NotificationChannel,
             Message = message,
             Title = title,
-            NotificationType = ENotificationType.Custom
+            NotificationChannel = notificationInfo.NotificationChannel,
+            NotificationChannelLabel = Enum.GetName(notificationInfo.NotificationChannel)!,
+            NotificationType = ENotificationType.Custom,
+            NotificationTypeLabel = Enum.GetName(ENotificationType.Custom)!
         };
         
         return notification;
     }
     
-    public async Task<Notification> BuildConfirmationCodeNotification(Guid donorId, ConfirmationCode confirmationCode)
+    public Task<Notification> BuildConfirmationCodeNotification(Guid donorId, ConfirmationCode confirmationCode)
     {
         var notificationChannel = confirmationCode.CodeType == ECodeType.Email
             ? ENotificationChannel.Email
             : ENotificationChannel.Sms;
         
-        var notification = new Notification
+        var notification = new Notification()
         {
             DonorId = donorId,
             CollectionFacilityId = -1,
             Message = string.Format(NotificationConstants.ConfirmationCodeTemplate, confirmationCode.Code),
             NotificationChannel = notificationChannel,
-            NotificationType = ENotificationType.ConfirmationCode
+            NotificationChannelLabel = Enum.GetName(notificationChannel)!,
+            NotificationType = ENotificationType.ConfirmationCode,
+            NotificationTypeLabel = Enum.GetName(ENotificationType.ConfirmationCode)!
         };
         
-        return notification;
+        return Task.FromResult(notification);
     }
 
 

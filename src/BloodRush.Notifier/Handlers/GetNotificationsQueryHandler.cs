@@ -14,7 +14,8 @@ public class GetNotificationsQueryHandler : IRequestHandler<GetNotificationsQuer
     }
     public async Task<List<Notification>> Handle(GetNotificationsQuery request, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        var notifications = await _notificationsRepository.GetNotificationsByDonorIdAsync(request.DonorId);
+        return notifications;
     }
 }
 

@@ -16,4 +16,5 @@ public interface INotificationsRepository
     Task<NotificationContent> GetNotificationContentForFacilityAsync(int collectionFacilityId,
         ENotificationType notificationType);
     Task AddNotificationAsync (Notification notification);
+    Task<List<Notification>> GetNotificationsByDonorIdAsync(Guid donorId);
 }
