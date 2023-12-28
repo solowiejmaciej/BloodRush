@@ -1,48 +1,104 @@
-using AutoMapper;
-using BloodRush.API.Dtos;
-using BloodRush.API.Exceptions;
-using BloodRush.API.Handlers.Donors;
-using BloodRush.API.Interfaces;
-using BloodRush.API.Interfaces.Repositories;
-using BloodRush.API.MappingProfiles;
-using BloodRush.API.Tests.Mocks;
+using Xunit;
 using Moq;
-using Should.Fluent;
-
-namespace BloodRush.API.Tests.Donors.Queries;
+using System;
+using AutoMapper;
+using BloodRush.API.Handlers.Donors;
+using BloodRush.API.Interfaces.Repositories;
+using BloodRush.API.Interfaces;
+using BloodRush.API.Dtos;
+using BloodRush.API.Entities;
+using BloodRush.API.Entities.Enums;
+using BloodRush.API.Exceptions;
 
 public class GetDonorByIdQueryHandlerTests
 {
-    private static readonly Guid LoggedInDonorId = Guid.Parse("9a1cbadd-7571-4d0c-bdc2-b5487149d276");
-    private readonly Mock<IDonorRepository> _donorRepositoryMock = DonorRepositoryMock.GetDonorRepositoryMock();
-    private readonly Mock<IUserContextAccessor> _userContextAccessorMock = UserContextAccessorMock.GetUserContextAccessorMock(LoggedInDonorId);
-    private readonly IMapper _mapper;
+    private readonly Mock<IDonorRepository> _mockDonorRepository;
+    private readonly Mock<IMapper> _mockMapper;
+    private readonly Mock<IUserContextAccessor> _mockUserContextAccessor;
+    private readonly GetDonorByIdQueryHandler _handler;
+
     public GetDonorByIdQueryHandlerTests()
     {
-        var config = new MapperConfiguration(
-            cfg => cfg.AddProfile(new DonorMappingProfile()));
-        _mapper = config.CreateMapper();
+        _mockDonorRepository = new Mock<IDonorRepository>();
+        _mockMapper = new Mock<IMapper>();
+        _mockUserContextAccessor = new Mock<IUserContextAccessor>();
+        _handler = new GetDonorByIdQueryHandler(_mockDonorRepository.Object, _mockMapper.Object, _mockUserContextAccessor.Object);
     }
 
     [Fact]
-    public void GetDonorByIdQueryHandler_ShouldReturn_DonorDto_When_Donor_Exists()
+    public async Task Handle_ReturnsMappedDonor_WhenDonorExistsAndMatchesCurrentUser()
     {
-        var handler = new GetDonorByIdQueryHandler(_donorRepositoryMock.Object, _mapper, _userContextAccessorMock.Object);
-        var result = handler.Handle(new GetDonorByIdQuery { Id = new Guid("9a1cbadd-7571-4d0c-bdc2-b5487149d276") },
-            CancellationToken.None).Result;
-        result.Should().Not.Be.Null();
-        result.Should().Be.OfType<DonorDto>();
+        var donorId = Guid.NewGuid();
+        var donor = new Donor
+        {
+            Id = donorId,
+            FirstName = null,
+            Surname = null,
+            Password = null,
+            Sex = ESex.Male,
+            DateOfBirth = default,
+            BloodType = EBloodType.APositive,
+            PhoneNumber = null,
+            Email = null,
+            HomeAddress = null,
+            Pesel = null,
+            MaxDonationRangeInKm = 0
+        };
+        var donorDto = new DonorDto
+        {
+            Id = donorId,
+            FirstName = null,
+            Surname = null,
+            Sex = ESex.Male,
+            DateOfBirth = default,
+            BloodType = EBloodType.APositive,
+            PhoneNumber = 0,
+            Email = null,
+            HomeAddress = null,
+            Pesel = null,
+            MaxDonationRangeInKm = 0
+        };
+        _mockDonorRepository.Setup(repo => repo.GetDonorByIdAsync(donorId)).ReturnsAsync(donor);
+        _mockMapper.Setup(mapper => mapper.Map<DonorDto>(donor)).Returns(donorDto);
+        _mockUserContextAccessor.Setup(accessor => accessor.GetDonorId()).Returns(donorId);
+
+        var result = await _handler.Handle(new GetDonorByIdQuery { Id = donorId }, CancellationToken.None);
+
+        Assert.Equal(donorDto, result);
     }
-    
+
     [Fact]
-    public void GetDonorByIdQueryHandler_ShouldThrow_DonorNotFoundException_When_Donor_Does_Not_Exist()
+    public async Task Handle_ThrowsDonorNotFoundException_WhenDonorExistsButDoesNotMatchCurrentUser()
     {
-        var handler = new GetDonorByIdQueryHandler(_donorRepositoryMock.Object, _mapper, _userContextAccessorMock.Object);
-        
-        var exception = Assert.Throws<AggregateException>(() => handler.Handle(new GetDonorByIdQuery { Id = new Guid("9a1cbadd-7571-4d0c-bdc2-b5487149d275") },
-            CancellationToken.None).Result);
-        
-        Assert.IsType<DonorNotFoundException>(exception.InnerException);
-        
+        var donorId = Guid.NewGuid();
+        var currentUserId = Guid.NewGuid();
+        var donor = new Donor
+        {
+            Id = donorId,
+            FirstName = null,
+            Surname = null,
+            Password = null,
+            Sex = ESex.Male,
+            DateOfBirth = default,
+            BloodType = EBloodType.APositive,
+            PhoneNumber = null,
+            Email = null,
+            HomeAddress = null,
+            Pesel = null,
+            MaxDonationRangeInKm = 0
+        };
+        _mockDonorRepository.Setup(repo => repo.GetDonorByIdAsync(donorId)).ReturnsAsync(donor);
+        _mockUserContextAccessor.Setup(accessor => accessor.GetDonorId()).Returns(currentUserId);
+
+        await Assert.ThrowsAsync<DonorNotFoundException>(() => _handler.Handle(new GetDonorByIdQuery { Id = donorId }, CancellationToken.None));
+    }
+
+    [Fact]
+    public async Task Handle_ThrowsDonorNotFoundException_WhenDonorDoesNotExist()
+    {
+        var donorId = Guid.NewGuid();
+        _mockDonorRepository.Setup(repo => repo.GetDonorByIdAsync(donorId)).ReturnsAsync((Donor)null);
+
+        await Assert.ThrowsAsync<DonorNotFoundException>(() => _handler.Handle(new GetDonorByIdQuery { Id = donorId }, CancellationToken.None));
     }
 }

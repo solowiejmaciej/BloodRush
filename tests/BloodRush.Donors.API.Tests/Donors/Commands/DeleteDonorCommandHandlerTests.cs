@@ -1,40 +1,58 @@
-using BloodRush.API.Handlers.Donors;
-using BloodRush.API.Interfaces;
-using BloodRush.API.Interfaces.Repositories;
-using BloodRush.API.Tests.Mocks;
+using Xunit;
 using Moq;
-using Should.Fluent;
-
-namespace BloodRush.API.Tests.Donors.Commands;
+using System;
+using BloodRush.API.Handlers.Donors;
+using BloodRush.API.Interfaces.Repositories;
+using BloodRush.API.Interfaces;
 
 public class DeleteDonorCommandHandlerTests
 {
-    private static readonly Guid LoggedInDonorId = Guid.Parse("9a1cbadd-7571-4d0c-bdc2-b5487149d276");
-    private readonly Mock<IDonorRepository> _donorRepositoryMock = DonorRepositoryMock.GetDonorRepositoryMock();
-    private readonly Mock<IUserContextAccessor> _userContextAccessorMock = UserContextAccessorMock.GetUserContextAccessorMock(LoggedInDonorId);
-    private readonly Mock<IEventPublisher> _eventPublisherMock = EventPublisherMock.GetEventPublisherMock();
+    private readonly Mock<IDonorRepository> _mockDonorRepository;
+    private readonly Mock<IUserContextAccessor> _mockUserContextAccessor;
+    private readonly Mock<IEventPublisher> _mockEventPublisher;
+    private readonly DeleteDonorCommandHandler _handler;
 
+    public DeleteDonorCommandHandlerTests()
+    {
+        _mockDonorRepository = new Mock<IDonorRepository>();
+        _mockUserContextAccessor = new Mock<IUserContextAccessor>();
+        _mockEventPublisher = new Mock<IEventPublisher>();
+        _handler = new DeleteDonorCommandHandler(_mockUserContextAccessor.Object, _mockDonorRepository.Object, _mockEventPublisher.Object);
+    }
 
     [Fact]
-    public void DeleteDonorCommandHandler_ShouldDeleteDonor_If_CurrentDonorId_IsDonorId()
+    public async Task Handle_ReturnsTrueAndPublishesEvent_WhenDonorIsDeletedSuccessfully()
     {
-        var handler = new DeleteDonorCommandHandler(_userContextAccessorMock.Object, _donorRepositoryMock.Object,
-            _eventPublisherMock.Object);
-        var result = handler.Handle(new DeleteDonorCommand{DonorId = Guid.Parse("9a1cbadd-7571-4d0c-bdc2-b5487149d276")}, CancellationToken.None).Result;
-        result.Should().Be.True();
-    }
-    
-    [Fact]
-    public void DeleteDonorCommandHandler_Should_Throw_If_CurrentDonorId_Is_Not_DonorId()
-    {
-        var handler = new DeleteDonorCommandHandler(_userContextAccessorMock.Object, _donorRepositoryMock.Object,
-            _eventPublisherMock.Object);
-        var exception = Assert.Throws<AggregateException>(() =>
-            handler.Handle(new DeleteDonorCommand { DonorId = Guid.Parse("9a1cbadd-7571-4d0c-bdc2-b5487149d275") },
-                CancellationToken.None).Result);
-        
-        Assert.IsType<UnauthorizedAccessException>(exception.InnerException);
+        var donorId = Guid.NewGuid();
+        _mockUserContextAccessor.Setup(accessor => accessor.GetDonorId()).Returns(donorId);
+        _mockDonorRepository.Setup(repo => repo.DeleteDonorAsync(donorId)).ReturnsAsync(true);
 
+        var result = await _handler.Handle(new DeleteDonorCommand { DonorId = donorId }, CancellationToken.None);
+
+        Assert.True(result);
+        _mockEventPublisher.Verify(publisher => publisher.PublishDonorDeletedEventAsync(donorId, It.IsAny<CancellationToken>()), Times.Once);
     }
-    
+
+    [Fact]
+    public async Task Handle_ReturnsFalseAndDoesNotPublishEvent_WhenDonorDeletionFails()
+    {
+        var donorId = Guid.NewGuid();
+        _mockUserContextAccessor.Setup(accessor => accessor.GetDonorId()).Returns(donorId);
+        _mockDonorRepository.Setup(repo => repo.DeleteDonorAsync(donorId)).ReturnsAsync(false);
+
+        var result = await _handler.Handle(new DeleteDonorCommand { DonorId = donorId }, CancellationToken.None);
+
+        Assert.False(result);
+        _mockEventPublisher.Verify(publisher => publisher.PublishDonorDeletedEventAsync(donorId, It.IsAny<CancellationToken>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task Handle_ThrowsUnauthorizedAccessException_WhenDonorIdDoesNotMatchCurrentUser()
+    {
+        var donorId = Guid.NewGuid();
+        var currentUserId = Guid.NewGuid();
+        _mockUserContextAccessor.Setup(accessor => accessor.GetDonorId()).Returns(currentUserId);
+
+        await Assert.ThrowsAsync<UnauthorizedAccessException>(() => _handler.Handle(new DeleteDonorCommand { DonorId = donorId }, CancellationToken.None));
+    }
 }

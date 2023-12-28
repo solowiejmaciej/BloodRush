@@ -32,6 +32,10 @@ public class GetDonorByIdQueryHandler : IRequestHandler<GetDonorByIdQuery, Donor
     public async Task<DonorDto> Handle(GetDonorByIdQuery request, CancellationToken cancellationToken)
     {
         var donor = await _donorRepository.GetDonorByIdAsync(request.Id);
+        if (donor == null)
+        {
+            throw new DonorNotFoundException();
+        }
         var currentUserId = _userContextAccessor.GetDonorId();
         if (donor.Id != currentUserId )    
         {

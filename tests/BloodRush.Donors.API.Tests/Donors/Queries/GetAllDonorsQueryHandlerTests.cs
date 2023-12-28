@@ -1,32 +1,112 @@
+using Xunit;
+using Moq;
+using System.Collections.Generic;
+using System.Threading;
 using AutoMapper;
 using BloodRush.API.Handlers.Donors;
-using BloodRush.API.Interfaces;
 using BloodRush.API.Interfaces.Repositories;
-using BloodRush.API.MappingProfiles;
-using BloodRush.API.Tests.Mocks;
-using Moq;
-using Should.Fluent;
+using BloodRush.API.Dtos;
+using BloodRush.API.Entities;
+using BloodRush.API.Entities.Enums;
 
-namespace BloodRush.API.Tests.Donors.Queries;
-
-public class GetAllDonorsQueryHandlerTests
+public partial class GetAllDonorsQueryHandlerTests
 {
-    private readonly Mock<IDonorRepository> _donorRepositoryMock;
-    private readonly IMapper _mapper;
+    private readonly Mock<IDonorRepository> _mockDonorRepository;
+    private readonly Mock<IMapper> _mockMapper;
+    private readonly GetAllDonorsQueryHandler _handler;
+
     public GetAllDonorsQueryHandlerTests()
     {
-        var config = new MapperConfiguration(
-            cfg => cfg.AddProfile(new DonorMappingProfile()));
-        _mapper = config.CreateMapper();
-        _donorRepositoryMock = DonorRepositoryMock.GetDonorRepositoryMock();
+        _mockDonorRepository = new Mock<IDonorRepository>();
+        _mockMapper = new Mock<IMapper>();
+        _handler = new GetAllDonorsQueryHandler(_mockDonorRepository.Object, _mockMapper.Object);
     }
-    
+
     [Fact]
-    public void GetAllDonorsQueryHandler_ShouldReturnAllDonors()
+    public async Task Handle_ReturnsMappedDonors_WhenRepositoryReturnsDonors()
     {
-        var handler = new GetAllDonorsQueryHandler(_donorRepositoryMock.Object, _mapper);
-        var result = handler.Handle(new GetAllDonorsQuery(), CancellationToken.None).Result;
-        result.Should().Not.Be.Null();
-        result.Count.Should().Equal(2);
+        // Arrange
+        var donors = new List<Donor> { new Donor
+        {
+            FirstName = null,
+            Surname = null,
+            Password = null,
+            Sex = ESex.Male,
+            DateOfBirth = default,
+            BloodType = EBloodType.APositive,
+            PhoneNumber = null,
+            Email = null,
+            HomeAddress = null,
+            Pesel = null,
+            MaxDonationRangeInKm = 0
+        }, new Donor
+            {
+                FirstName = null,
+                Surname = null,
+                Password = null,
+                Sex = ESex.Male,
+                DateOfBirth = default,
+                BloodType = EBloodType.APositive,
+                PhoneNumber = null,
+                Email = null,
+                HomeAddress = null,
+                Pesel = null,
+                MaxDonationRangeInKm = 0
+            }
+        };
+        var donorDtos = new List<DonorDto> {
+            new DonorDto
+            {
+                FirstName = null,
+                Surname = null,
+                Sex = ESex.Male,
+                DateOfBirth = default,
+                BloodType = EBloodType.APositive,
+                PhoneNumber = 0,
+                Email = null,
+                HomeAddress = null,
+                Pesel = null,
+                MaxDonationRangeInKm = 0,
+                Id = default
+            }
+        };
+        donorDtos.Add(new DonorDto
+        {
+            FirstName = null,
+            Surname = null,
+            Sex = ESex.Male,
+            DateOfBirth = default,
+            BloodType = EBloodType.APositive,
+            PhoneNumber = 0,
+            Email = null,
+            HomeAddress = null,
+            Pesel = null,
+            MaxDonationRangeInKm = 0,
+            Id = default
+        });
+        _mockDonorRepository.Setup(repo => repo.GetAllDonorsAsync()).ReturnsAsync(donors);
+        _mockMapper.Setup(mapper => mapper.Map<List<DonorDto>>(donors)).Returns(donorDtos);
+
+        // Act
+        var result = await _handler.Handle(new GetAllDonorsQuery(), CancellationToken.None);
+
+        // Assert
+        Assert.Equal(donorDtos, result);
+    }
+
+    [Fact]
+    public async Task Handle_ReturnsEmptyList_WhenRepositoryReturnsNoDonors()
+    {
+        // Arrange
+        var donors = new List<Donor>();
+        var donorDtos = new List<DonorDto>();
+        _mockDonorRepository.Setup(repo => repo.GetAllDonorsAsync()).ReturnsAsync(donors);
+        _mockMapper.Setup(mapper => mapper.Map<List<DonorDto>>(donors)).Returns(donorDtos);
+
+        // Act
+        var result = await _handler.Handle(new GetAllDonorsQuery(), CancellationToken.None);
+
+        // Assert
+        Assert.Empty(result);
     }
 }
